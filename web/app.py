@@ -19782,20 +19782,10 @@ def setswitchapi():
   
   return jsonify(result="OK", switch=newswitchitem)
 
-@app.route('/setdimmerapi')
-@cross_origin()
-def setdimmerapi():
-  deviceapikey = request.args.get('deviceapikey', '000000000000')
-  dimmerid = request.args.get('dimmerid', "0")
-  dimmervalue = request.args.get('dimmervalue', "3")
-  dimmeroverride = request.args.get('dimmeroverride', "0")
-  instance = request.args.get('instance', "0")
-
-
-  deviceid = getedeviceid(deviceapikey)
+#Updates MemCache with new Dimmer records
+def setdimmerMemCache(deviceid, instance, dimmerid, dimmeroverride, dimmervalue ):
     
-  log.info("setdimmerapi deviceid %s", deviceid)
-  #log.info("sendswitchapi dimmerpgn %s", dimmerpgn)
+  log.info("setdimmerMemCache deviceid %s", deviceid)
   
   if deviceid == "":
     return jsonify(result="Error", switch=dimmerpgn)
@@ -19912,6 +19902,57 @@ def setdimmerapi():
     log.info('setdimmerMemCache - MemCache set error %s:  ' % e)
 
   
+  return jsonify(result="OK", dimmer=newdimmeritem)
+
+
+@app.route('/setdimmerapi')
+@cross_origin()
+def setdimmerapi():
+  deviceapikey = request.args.get('deviceapikey', '000000000000')
+  dimmerid = request.args.get('dimmerid', "0")
+  dimmervalue = request.args.get('dimmervalue', "3")
+  dimmeroverride = request.args.get('dimmeroverride', "0")
+  instance = request.args.get('instance', "0")
+
+
+  deviceid = getedeviceid(deviceapikey)
+    
+  log.info("setdimmerapi deviceid %s", deviceid)
+  #log.info("sendswitchapi dimmerpgn %s", dimmerpgn)
+  
+  if deviceid == "":
+    return jsonify(result="Error", switch=dimmerpgn)
+
+  log.info("setdimmerbankapi setdimmerMemCache %s, %s, %s, %s, %s", deviceid, instance, dimmerid, dimmeroverrides[instance], dimmervalues[instance] )
+  newdimmeritem = setdimmerMemCache(deviceid, instance, dimmerid, dimmeroverride, dimmervalue)
+
+  
+
+@app.route('/setdimmerbankapi')
+def setdimmerbankapi():
+  deviceid = request.args.get('deviceid', '000000000000')
+  dimmerid = request.args.get('dimmerid', "0")
+  dimmeroverride = request.args.get('dimmeroverrides', "0")
+  dimmervalue = request.args.get('dimmervalues', "255")
+  #instance = request.args.get('instance', "0")
+  newdimmeritem = {}
+  
+  log.info("setdimmerbankapi deviceid %s", deviceid)
+
+  dimmervalues = dimmervalue.split(',')
+  log.info("setdimmerbankapi dimmervalues %s", dimmervalues)
+  dimmeroverrides = dimmeroverride.split(',')
+  log.info("setdimmerbankapi dimmeroverrides %s", dimmeroverrides)
+
+  valuesLen = len(dimmervalues)
+  log.info("setdimmerbankapi valuesLen %s", valuesLen)
+
+  for instance  in  range(0, 16):
+
+    log.info("setdimmerbankapi setdimmerMemCache %s, %s, %s, %s, %s", deviceid, instance, dimmerid, dimmeroverrides[instance], dimmervalues[instance] )
+    newdimmeritem = setdimmerMemCache(deviceid, instance, dimmerid, dimmeroverrides[instance], dimmervalues[instance])
+
+
   return jsonify(result="OK", dimmer=newdimmeritem)
 
 
