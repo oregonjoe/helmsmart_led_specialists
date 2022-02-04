@@ -19923,7 +19923,7 @@ def setdimmerapi():
   if deviceid == "":
     return jsonify(result="Error", switch=dimmerpgn)
 
-  log.info("setdimmerbankapi setdimmerMemCache %s, %s, %s, %s, %s", deviceid, instance, dimmerid, dimmeroverrides[instance], dimmervalues[instance] )
+  log.info("setdimmerbankapi setdimmerMemCache %s, %s, %s, %s, %s", deviceid, instance, dimmerid, dimmeroverride, dimmervalue)
   newdimmeritem = setdimmerMemCache(deviceid, instance, dimmerid, dimmeroverride, dimmervalue)
 
   
