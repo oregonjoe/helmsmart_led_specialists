@@ -19927,7 +19927,7 @@ def setdimmerapi():
   log.info("setdimmerbankapi setdimmerMemCache %s, %s, %s, %s, %s", deviceid, instance, dimmerid, dimmeroverride, dimmervalue)
   newdimmeritem = setdimmerMemCache(deviceid, instance, dimmerid, dimmeroverride, dimmervalue)
 
-  
+  return jsonify(result="OK", dimmer=newdimmeritem)
 
 @app.route('/setdimmerbankapi')
 def setdimmerbankapi():
