@@ -19901,8 +19901,9 @@ def setdimmerMemCache(deviceid, instance, dimmerid, dimmeroverride, dimmervalue 
     e = sys.exc_info()[0]
     log.info('setdimmerMemCache - MemCache set error %s:  ' % e)
 
-  
-  return jsonify(result="OK", dimmer=newdimmeritem)
+  log.info('setdimmerMemCache - completed ')
+  return newdimmeritem
+  #return jsonify(result="OK", dimmer=newdimmeritem)
 
 
 @app.route('/setdimmerapi')
