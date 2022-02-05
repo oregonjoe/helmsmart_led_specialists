@@ -2584,7 +2584,7 @@
 			{
 
 					//if(new_val >= 0 && new_val <= 100)
-					//	dimmervalue=new_val;
+						dimmervalue=new_val;
 					//else
 					//	dimmervalue=101;
 	
