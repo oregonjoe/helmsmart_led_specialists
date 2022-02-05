@@ -6015,7 +6015,7 @@ def freeboard_environmental_calculated():
       
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
         #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
@@ -6478,7 +6478,7 @@ def freeboard_environmental_metar():
       
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
         #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
@@ -6987,7 +6987,7 @@ def helmsmart_environmental_baroncsv():
       
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
         #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
@@ -7497,7 +7497,7 @@ def helmsmart_environmental_nmea0183():
       
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
         #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
@@ -8017,7 +8017,7 @@ def helmsmart_environmental_baroncsv_text():
       
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
         #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
@@ -9909,10 +9909,10 @@ def freeboard_winddata_apparent():
  
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
         value1 = convertfbunits(point['wind_speed'],  4)
         value2 = convertfbunits(point['wind_direction'], 16)
 
@@ -14610,10 +14610,10 @@ def freeboard_dimmer_status():
        
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
 
         if point['time'] is not None:
           mydatetimestr = str(point['time'])
@@ -14893,10 +14893,10 @@ def freeboard_get_engine_values():
 
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
         
         if point['engine_temp'] is not None:
           engine_temp=convertfbunits(point['engine_temp'],  convertunittype('temperature', units))
@@ -15163,10 +15163,10 @@ def freeboard_get_rain_gauge():
 
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
         
         if point['accumulation'] is not None:
           accumulation=convertfbunits(point['accumulation'],  convertunittype('accumulation', units))
@@ -15437,10 +15437,10 @@ def freeboard_get_weather_values():
 
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
         
         if point['temperature'] is not None:
           temperature=convertfbunits(point['temperature'],  convertunittype('temperature', units))
@@ -15728,10 +15728,10 @@ def freeboard_get_weather_minmax_value():
       
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
 
         if parameter == 'air temp':        
           if point['temperature'] is not None:
@@ -15997,10 +15997,10 @@ def freeboard_get_dimmer_values():
 
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
         
         if point['dv0'] is not None:
           dimmer0=int(point['dv0'])
@@ -19596,10 +19596,10 @@ def freeboard_ac_status_array():
       
       points = list(response.get_points())
 
-      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
 
         if point['time'] is not None:
           mydatetimestr = str(point['time'])
