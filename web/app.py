@@ -11654,7 +11654,7 @@ def freeboard_attitude():
         #return '{0}({1})'.format(callback, {'update':'False', 'status':'missing' })
         return '{0}({1})'.format(callback, {'date_time':myjsondate,  'status':'missing', 'update':'False', 'pitch':list(reversed(pitch)), 'roll':list(reversed(roll)), 'yaw':list(reversed(yaw))})     
 
-    log.info('freeboard:  InfluxDB-Cloud response  %s:', response)
+    #log.info('freeboard:  InfluxDB-Cloud response  %s:', response)
 
     keys = response.raw.get('series',[])
     #keys = result.keys()
@@ -14584,7 +14584,7 @@ def freeboard_dimmer_status():
         #return '{0}({1})'.format(callback, {'update':'False', 'status':'missing' })
         return '{0}({1})'.format(callback, {'date_time':myjsondate, 'update':'True','dimmer_bank':list(reversed(dimmerstatus))})    
 
-    log.info('freeboard:  InfluxDB-Cloud response  %s:', response)
+    #log.info('freeboard:  InfluxDB-Cloud response  %s:', response)
 
     keys = response.raw.get('series',[])
     #keys = result.keys()
@@ -19559,7 +19559,7 @@ def freeboard_ac_status_array():
         callback = request.args.get('callback')
         return '{0}({1})'.format(callback, {'update':'False', 'status':'missing' })
 
-    log.info('freeboard:  InfluxDB-Cloud response  %s:', response)
+    #log.info('freeboard:  InfluxDB-Cloud response  %s:', response)
 
     keys = response.raw.get('series',[])
     #keys = result.keys()
@@ -19939,6 +19939,18 @@ def setdimmerbankapi():
   newdimmeritem = {}
   
   log.info("setdimmerbankapi deviceid %s", deviceid)
+
+
+
+  deviceid = getedeviceid(deviceapikey)
+    
+  log.info("setdimmerapi deviceid %s", deviceid)
+  #log.info("sendswitchapi dimmerpgn %s", dimmerpgn)
+  
+  if deviceid == "":
+    return jsonify(result="Error", switch=dimmerpgn)
+
+  
 
   dimmervalues = dimmervalue.split(',')
   log.info("setdimmerbankapi dimmervalues %s", dimmervalues)
