@@ -19842,7 +19842,7 @@ def setdimmerMemCache(deviceid, instance, dimmerid, dimmeroverride, dimmervalue 
         newItem = {'instance':itemInstance, 'dimmerid':itemDimmerid, 'dimmervalue':itemDimmervalue, 'dimmeroverride':itemDimmeroverride}
         
         newdimmeritem.append(newItem)
-        log.info("setdimmerMemCache - old  keys are different %s", newdimmeritem)
+        #log.info("setdimmerMemCache - old  keys are different %s", newdimmeritem)
 
       # if instance and ID are equal but old override value is 2 (override enabled) and new value is 0 (NULL from Alert)
       # Keep override active
@@ -19856,13 +19856,13 @@ def setdimmerMemCache(deviceid, instance, dimmerid, dimmeroverride, dimmervalue 
         if int(dimmerpgn['dimmeroverride']) == 1 and int(itemDimmeroverride) >= 2:
           #dimmerpgn = {'instance':instance, 'dimmerid':dimmerid, 'dimmervalue':dimmervalue, 'dimmeroverride':'0'}
           dimmerpgn = {'instance':instance, 'dimmerid':dimmerid, 'dimmervalue':dimmervalue, 'dimmeroverride':'1'}
-          log.info("setdimmerMemCache - old  keys are same with new override = 1 and old >=2 %s", dimmerpgn)
+          #log.info("setdimmerMemCache - old  keys are same with new override = 1 and old >=2 %s", dimmerpgn)
           
         #If wee are in override mode  - replace values with override  
         elif int(dimmerpgn['dimmeroverride'] )  == 0 and int(itemDimmeroverride) >= 2:
           dimmerpgn['dimmervalue'] = item['dimmervalue'] 
           dimmerpgn['dimmeroverride'] = itemDimmeroverride
-          log.info("setdimmerMemCache - old  keys are same with new override =0 old >=2 %s", dimmerpgn)
+          #log.info("setdimmerMemCache - old  keys are same with new override =0 old >=2 %s", dimmerpgn)
 
           
 

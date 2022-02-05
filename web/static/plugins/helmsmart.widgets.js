@@ -2580,7 +2580,26 @@
 				url = url + "&dimmerid=" + switchid ;
 				url = url + "&dimmervalue=" + dimmervalue ;
 			}	
+			else if( widgettype == "dimmer_bank")	
+			{
+
+					//if(new_val >= 0 && new_val <= 100)
+					//	dimmervalue=new_val;
+					//else
+					//	dimmervalue=101;
+	
 			
+
+				var url = "https://helmsmart-led-specialists.herokuapp.com/setdimmerapi";
+				url = url + "?deviceapikey=" + currentSettings.apikey;
+
+				//url = url + "&instance=" + switchInstance ;
+				url = url + "&dimmerid=" + switchid ;
+				url = url + "&dimmervalues=" + dimmervalue ;
+
+				url = url + "&dimmeroverrides=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+				
+			}	
 			
 			request = new XMLHttpRequest();
             if (!request) {
@@ -2679,7 +2698,29 @@
 					}
 				}
 			}
-			
+			else if (currentSettings.indicatortype == "dimmer_bank")
+			{
+				if(gdisableIndicatorClick == false)
+				{
+					var new_val = currentSettings.threshold
+					//var new_val = !isOn
+					var new_val_array = []
+					new_val_array.push(new_val);
+					
+					//this.onCalculatedValueChanged('value', new_val_array);
+					var apikey =  currentSettings.apikey;
+					//var switchinstance = currentSettings.instance;
+					var switchid = currentSettings.switchid;
+					
+					
+					if (_.isUndefined(apikey))
+						freeboard.showDialog($("<div align='center'>apikey undefined</div>"), "Error!", "OK", null, function () {
+						});
+					else {
+						this.sendValue(apikey, currentSettings.indicatortype, switchid, new_val);
+					}
+				}
+			}
 			
         }
 		
@@ -2837,6 +2878,12 @@
 								
 							}
 						}
+						else if (currentSettings.indicatortype == "dimmer_bank")
+						{
+							isOn = true;
+									updateState();
+							
+						}
 						else
 						{
 							var switchid=currentSettings.switchid;
@@ -2942,6 +2989,10 @@
 				{
 					"name": "Dimmer Zone",
 					"value": "dimmer"
+				},
+				{
+					"name": "Dimmer Banke",
+					"value": "dimmer_bank"
 				}
 				]
 			},
