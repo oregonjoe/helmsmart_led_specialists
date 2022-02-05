@@ -2991,7 +2991,7 @@
 					"value": "dimmer"
 				},
 				{
-					"name": "Dimmer Banke",
+					"name": "Dimmer Bank",
 					"value": "dimmer_bank"
 				}
 				]
@@ -3032,7 +3032,8 @@
 			{
 				name: "threshold",
 				display_name: "Threshold Value",
-				type: "number",
+				//type: "number",
+				type: "text"
 				suffix: "",
 				default_value: 0
 			},
