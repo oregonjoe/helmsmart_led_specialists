@@ -2590,7 +2590,7 @@
 	
 			
 
-				var url = "https://helmsmart-led-specialists.herokuapp.com/setdimmerapi";
+				var url = "https://helmsmart-led-specialists.herokuapp.com/setdimmerbankapi";
 				url = url + "?deviceapikey=" + currentSettings.apikey;
 
 				//url = url + "&instance=" + switchInstance ;
