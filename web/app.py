@@ -19931,7 +19931,7 @@ def setdimmerapi():
 
 @app.route('/setdimmerbankapi')
 def setdimmerbankapi():
-  deviceid = request.args.get('deviceid', '000000000000')
+  deviceapikey = request.args.get('deviceapikey', '000000000000')
   dimmerid = request.args.get('dimmerid', "0")
   dimmeroverride = request.args.get('dimmeroverrides', "0")
   dimmervalue = request.args.get('dimmervalues', "255")
