@@ -3033,7 +3033,7 @@
 				name: "threshold",
 				display_name: "Threshold Value",
 				//type: "number",
-				type: "text"
+				type: "text",
 				suffix: "",
 				default_value: 0
 			},
