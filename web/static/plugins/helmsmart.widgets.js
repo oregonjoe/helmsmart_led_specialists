@@ -2880,6 +2880,24 @@
 						}
 						else if (currentSettings.indicatortype == "dimmer_bank")
 						{
+							
+							
+							
+							var threshold = currentSettings.threshold
+							var switchvalue = switchvalue = "---";
+													
+						
+							for(i=0; i< newValue.length; i++)
+							{
+								if(newValue[i].value != "---")
+								{
+									switchvalue = newValue[i].value;
+									break;
+								}
+							}
+							
+							
+							
 							isOn = true;
 									updateState();
 							
