@@ -19938,7 +19938,7 @@ def setdimmerbankapi():
   #instance = request.args.get('instance', "0")
   newdimmeritem = {}
   
-  log.info("setdimmerbankapi deviceid %s", deviceid)
+  log.info("setdimmerbankapi deviceapikey %s", deviceapikey)
 
 
 
