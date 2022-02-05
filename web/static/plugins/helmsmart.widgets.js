@@ -2883,7 +2883,8 @@
 							
 							
 							
-							var threshold = currentSettings.threshold
+							var thresholds = currentSettings.threshold.split(",");
+							var threshold = thresholds[0];
 							var switchvalue = switchvalue = "---";
 													
 						
@@ -2897,9 +2898,16 @@
 							}
 							
 							
+							if(switchvalue == threshold )
+							{
+								isOn = true;
+							}
+							else
+							{
+								isOn = true;	
+							}
 							
-							isOn = true;
-									updateState();
+							updateState();
 							
 						}
 						else
