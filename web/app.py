@@ -8,6 +8,8 @@ import json
 #import md5
 import hashlib
 import base64
+from operator import itemgetter
+
 
 import requests
 from requests.exceptions import HTTPError
@@ -14028,14 +14030,14 @@ def get_dbstat():
     #query =(' select records as records from HelmSmartDB')      
       
     
-    log.info("inFlux-cloud Query %s", query)
+    log.info("get_dbstat inFlux-cloud Query %s", query)
     
 
     try:
       response= db.query(query)
     except:
       e = sys.exc_info()[0]
-      log.info('inFluxDB: Error in geting inFluxDB data %s:  ' % e)
+      log.info('get_dbstat: Error in geting inFluxDB data %s:  ' % e)
         
       return jsonify( message='Error in inFluxDB query 2', status='error')
       #raise
@@ -14057,12 +14059,12 @@ def get_dbstat():
     #  #print 'inFluxDB Exception2:', response.response.successful, response.response.reason 
     #  return jsonify( message='No data to return 2', status='error')
 
-    print('inFluxDB processing data headers:')
+    print('get_dbstat processing data headers:')
     jsondata=[]
     jsonkey=[]
     #strvaluekey = {'Series': SERIES_KEY, 'start': start,  'end': end, 'resolution': resolution}
     #jsonkey.append(strvaluekey)
-    print('inFluxDB start processing data points:')
+    print('get_dbstat start processing data points:')
     #log.info("freeboard Get InfluxDB response %s", response)
 
     keys = response.raw.get('series',[])
@@ -14087,14 +14089,15 @@ def get_dbstat():
       """
 
       tag = series['tags']
-      log.info("freeboard Get InfluxDB series tags2 %s ", tag)
+      #log.info("freeboard Get InfluxDB series tags2 %s ", tag)
 
       #mydatetimestr = str(fields['time'])
       strvaluekey = {'Series': series['tags'], 'start': startepoch,  'end': endepoch}
       jsonkey.append(strvaluekey)        
 
-      log.info("freeboard Get InfluxDB series tags3 %s ", tag['deviceid'])
-
+      #log.info("freeboard Get InfluxDB series tags3 %s ", tag['deviceid'])
+      # initialize datetime to default
+      mydatetime = datetime.datetime.now()
       
       for point in series['values']:
         fields = {}
@@ -14113,7 +14116,34 @@ def get_dbstat():
             #devicename = record[1]
 
             #strvalue = {'epoch': fields['time'], 'source':tag['deviceid'], 'name':devicename, 'value': fields['records']}        
-            strvalue = {'epoch': fields['time'],  'records': fields['records']}
+            #strvalue = {'epoch': fields['time'],  'records': fields['records']}
+            #strvalue = {'epoch': fields['time'],  'value': fields['records']}
+            mydatetimestr = str(fields['time'])
+            log.info('freeboard_environmental:: mydatetimestr %s:  ' % mydatetimestr)
+            
+            # convert string to datetime opject
+            mydatetime = datetime.datetime.strptime(mydatetimestr, '%Y-%m-%dT%H:%M:%S%z')
+            log.info('freeboard_environmental:: mydatetime %s:  ' % mydatetime)
+
+            # set timezone of new datetime opbect
+            mydatetimetz = mydatetime.replace(tzinfo=ZoneInfo(mytimezone))
+            log.info('freeboard_environmental:: mydatetimetz %s:  ' % mydatetimetz)    
+
+            ## This dosnt work for python 3.11 anymore
+            ## throws an OverFlow error
+            ##dtt = mydatetimetz.timetuple()
+            ##ts = int(mktime(dtt)*1000)
+            ## So we need to convert datetime directly to seconds and add in timezone offesets
+
+            # get seconds offset for selected timezone
+            tzoffset = mydatetimetz.utcoffset().total_seconds()
+            log.info('freeboard_environmental:: tzoffset %s:  ' % tzoffset)           
+
+            # adjust GMT time for slected timezone for display purposes
+            ts = int((mydatetime.timestamp() + tzoffset) * 1000 )
+            log.info('freeboard_environmental:: ts %s:  ' % ts)
+            
+            strvalue = {'epoch': ts,  'value': fields['records']}
             jsondata.append(strvalue)
 
 
@@ -14125,8 +14155,8 @@ def get_dbstat():
     total = 0
 
     for stat in jsondata:
-      if stat['records'] != None:
-        total = total + float(stat['records'])
+      if stat['value'] != None:
+        total = total + float(stat['value'])
 
     """        
     if len(jsondata) > 0:
@@ -14134,12 +14164,13 @@ def get_dbstat():
       stat0 = str(jsondata[0]['source']) + ":" + str(jsondata[0]['name']) + " = " +  str(jsondata[0]['value'])
     """        
 
-    mydatetimestr = str(jsondata[0]['epoch'])
-    mydatetime = datetime.datetime.strptime(mydatetimestr, '%Y-%m-%dT%H:%M:%SZ')
+    #mydatetimestr = str(jsondata[0]['epoch'])
+    #mydatetime = datetime.datetime.strptime(mydatetimestr, '%Y-%m-%dT%H:%M:%SZ')
 
     #log.info('freeboard: freeboard returning data values wind_speed:%s, wind_direction:%s  ', stat1,stat2)            
 
     callback = request.args.get('callback')
+    # use the last valid timestamp for the update
     myjsondate = mydatetime.strftime("%B %d, %Y %H:%M:%S")
 
 
@@ -14148,36 +14179,36 @@ def get_dbstat():
 
 
   except TypeError as e:
-      log.info('get_influxdbcloud_data: Type Error in InfluxDB mydata append %s:  ', response)
-      log.info('get_influxdbcloud_data: Type Error in InfluxDB mydata append %s:  ' % str(e))
+      #log.info('get_dbstat: Type Error in InfluxDB mydata append %s:  ', response)
+      log.info('get_dbstat: Type Error in InfluxDB mydata append %s:  ' % str(e))
           
   except KeyError as e:
-      log.info('get_influxdbcloud_data: Key Error in InfluxDB mydata append %s:  ', response)
-      log.info('get_influxdbcloud_data: Key Error in InfluxDB mydata append %s:  ' % str(e))
+      #log.info('get_dbstat: Key Error in InfluxDB mydata append %s:  ', response)
+      log.info('get_dbstat: Key Error in InfluxDB mydata append %s:  ' % str(e))
 
   except NameError as e:
-      log.info('get_influxdbcloud_data: Name Error in InfluxDB mydata append %s:  ', response)
-      log.info('get_influxdbcloud_data: Name Error in InfluxDB mydata append %s:  ' % str(e))
+      #log.info('get_dbstat: Name Error in InfluxDB mydata append %s:  ', response)
+      log.info('get_dbstat: Name Error in InfluxDB mydata append %s:  ' % str(e))
           
   except IndexError as e:
-      log.info('get_influxdbcloud_data: Index error in InfluxDB mydata append %s:  ', response)
-      log.info('get_influxdbcloud_data: Index Error in InfluxDB mydata append %s:  ' % str(e))  
+      #log.info('get_dbstat: Index error in InfluxDB mydata append %s:  ', response)
+      log.info('get_dbstat: Index Error in InfluxDB mydata append %s:  ' % str(e))  
 
   except ValueError as e:
-    log.info('get_influxdbcloud_data: Index error in InfluxDB mydata append %s:  ', response)
-    log.info('get_influxdbcloud_data: Value Error in InfluxDB  %s:  ' % str(e))
+    #log.info('get_dbstat: Index error in InfluxDB mydata append %s:  ', response)
+    log.info('get_dbstat: Value Error in InfluxDB  %s:  ' % str(e))
 
   except AttributeError as e:
-    log.info('get_influxdbcloud_data: Index error in InfluxDB mydata append %s:  ', response)
-    log.info('get_influxdbcloud_data: AttributeError in InfluxDB  %s:  ' % str(e))     
+    #log.info('get_dbstat: Index error in InfluxDB mydata append %s:  ', response)
+    log.info('get_dbstat: AttributeError in InfluxDB  %s:  ' % str(e))     
 
   except InfluxDBClientError as e:
-    log.info('get_influxdbcloud_data: Exception Error in InfluxDB  %s:  ' % str(e))     
+    log.info('get_dbstat: Exception Error in InfluxDB  %s:  ' % str(e))     
   
   except:
-    log.info('get_influxdbcloud_data: Error in geting freeboard response %s:  ', strvalue)
+    log.info('get_dbstat: Error in geting freeboard response %s:  ', strvalue)
     e = sys.exc_info()[0]
-    log.info('get_influxdbcloud_data: Error in geting freeboard ststs %s:  ' % e)
+    log.info('get_dbstat: Error in geting freeboard ststs %s:  ' % e)
     return jsonify( message='error processing data 3' , status='error')        
 
   callback = request.args.get('callback')
@@ -14307,7 +14338,7 @@ def get_dbstats():
     jsonkey=[]
     #strvaluekey = {'Series': SERIES_KEY, 'start': start,  'end': end, 'resolution': resolution}
     #jsonkey.append(strvaluekey)
-    print('inFluxDB start processing data points:')
+    #print('inFluxDB start processing data points:')
     #log.info("freeboard Get InfluxDB response %s", response)
 
     keys = response.raw.get('series',[])
@@ -14332,13 +14363,13 @@ def get_dbstats():
       """
 
       tag = series['tags']
-      log.info("freeboard Get InfluxDB series tags2 %s ", tag)
+      #log.info("freeboard Get InfluxDB series tags2 %s ", tag)
 
       #mydatetimestr = str(fields['time'])
       strvaluekey = {'Series': series['tags'], 'start': startepoch,  'end': endepoch}
       jsonkey.append(strvaluekey)        
 
-      log.info("freeboard Get InfluxDB series tags3 %s ", tag['deviceid'])
+      #log.info("freeboard Get InfluxDB series tags3 %s ", tag['deviceid'])
 
       
       for point in series['values']:
@@ -14346,7 +14377,7 @@ def get_dbstats():
         for key, val in zip(series['columns'], point):
           fields[key] = val
           
-        log.info("freeboard Get InfluxDB series points %s , %s", fields['time'], fields['records'])
+        #log.info("freeboard Get InfluxDB series points %s , %s", fields['time'], fields['records'])
         
         if fields['records'] != None:
 
