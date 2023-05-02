@@ -1,0 +1,198 @@
+{
+	"version": 1,
+	"allow_edit": true,
+	"plugins": [],
+	"panes": [
+		{
+			"title": "SET MASTER ZONE ON",
+			"width": 1,
+			"row": {
+				"2": 1,
+				"3": 1
+			},
+			"col": {
+				"2": 1,
+				"3": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Dimmer_00_RealTime\"][\"dimmer0_value\"]",
+						"on_text": "MAX - ACTIVE",
+						"off_text": "MAX - INACTIVE",
+						"apikey": "8fd901b6ba1f80d007d4512d9be9101d",
+						"indicatortype": "dimmer_bank",
+						"indicatormode": "active_high_EQ",
+						"threshold": "101,100,100,100,100,100,100,100,100,100,100,100,100,0,100,100",
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		},
+		{
+			"title": "Half Field Car Park",
+			"width": 1,
+			"row": {
+				"2": 1,
+				"3": 13
+			},
+			"col": {
+				"2": 2,
+				"3": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Dimmer_00_RealTime\"][\"dimmer0_value\"]",
+						"on_text": "MID - ACTIVE",
+						"off_text": "MID - INACTIVE",
+						"apikey": "8fd901b6ba1f80d007d4512d9be9101d",
+						"indicatortype": "dimmer_bank",
+						"indicatormode": "active_high_EQ",
+						"threshold": "101,100,0,0,100,0,100,0,0,100,100,0,100,0,100,0",
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		},
+		{
+			"title": "SET MASTER ZONE OFF",
+			"width": 1,
+			"row": {
+				"2": 5,
+				"3": 5
+			},
+			"col": {
+				"2": 1,
+				"3": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Dimmer_00_RealTime\"][\"dimmer0_value\"]",
+						"on_text": "OFF - ACTIVE",
+						"off_text": "OFF - INACTIVE",
+						"apikey": "8fd901b6ba1f80d007d4512d9be9101d",
+						"indicatortype": "dimmer_bank",
+						"indicatormode": "active_high_EQ",
+						"threshold": "101,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		},
+		{
+			"title": "Half Field Far End",
+			"width": 1,
+			"row": {
+				"3": 21
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Dimmer_00_RealTime\"][\"dimmer0_value\"]",
+						"on_text": "MID - ACTIVE",
+						"off_text": "MID - INACTIVE",
+						"apikey": "8fd901b6ba1f80d007d4512d9be9101d",
+						"indicatortype": "dimmer_bank",
+						"indicatormode": "active_high_EQ",
+						"threshold": "101,0,100,100,100,100,0,100,0,100,0,0,0,0,100,0",
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		},
+		{
+			"title": "Half Field Stands Touchline",
+			"width": 1,
+			"row": {
+				"3": 17
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Dimmer_00_RealTime\"][\"dimmer0_value\"]",
+						"on_text": "MID - ACTIVE",
+						"off_text": "MID - INACTIVE",
+						"apikey": "8fd901b6ba1f80d007d4512d9be9101d",
+						"indicatortype": "dimmer_bank",
+						"indicatormode": "active_high_EQ",
+						"threshold": "101,0,0,100,0,0,0,100,0,100,100,0,100,0,0,0",
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		},
+		{
+			"title": "Half Field Far Touchline",
+			"width": 1,
+			"row": {
+				"3": 9
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Dimmer_00_RealTime\"][\"dimmer0_value\"]",
+						"on_text": "MID - ACTIVE",
+						"off_text": "MID - INACTIVE",
+						"apikey": "8fd901b6ba1f80d007d4512d9be9101d",
+						"indicatortype": "dimmer_bank",
+						"indicatormode": "active_high_EQ",
+						"threshold": "101,100,100,0,100,100,100,0,0,0,0,0,0,0,100,0",
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		}
+	],
+	"datasources": [
+		{
+			"name": "Dimmer_00_RealTime",
+			"type": "JSON",
+			"settings": {
+				"url": "https://helmsmart-led-specialists.herokuapp.com/freeboard_dimmer_values",
+				"apikey": "8fd901b6ba1f80d007d4512d9be9101d",
+				"refresh": 60,
+				"span": "2min",
+				"resolution": "60",
+				"source": "",
+				"instance": "0",
+				"index": "0",
+				"type": "",
+				"timezone": "US%2FPacific",
+				"units": "US",
+				"mode": "median",
+				"name": "Dimmer_00_RealTime"
+			}
+		}
+
+	],
+	"columns": 3
+}

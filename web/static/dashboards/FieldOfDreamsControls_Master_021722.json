@@ -1,0 +1,246 @@
+{
+	"version": 1,
+	"allow_edit": true,
+	"plugins": [],
+	"panes": [
+		{
+			"title": "Field1",
+			"width": 1,
+			"row": {
+				"3": 1
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 1,
+			"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Field1\"][\"dimmer0_value\"]",
+						"on_text": "ON - ACTIVE",
+						"off_text": "ON- INACTIVE",
+						"apikey": "0e76d79a98ebd100f26187f1c57c1ab2",
+						"indicatortype": "dimmer",
+						"indicatormode": "active_high_EQ",
+						"threshold": "100",
+						"instance": 0,
+						"switchid": 0
+					}
+				},
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Field1\"][\"dimmer0_value\"]",
+						"on_text": "OFF - Active",
+						"off_text": "OFF - Inactive",
+						"apikey": "0e76d79a98ebd100f26187f1c57c1ab2",
+						"indicatortype": "dimmer",
+						"indicatormode": "active_high_EQ",
+						"threshold": 0,
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		},
+		{
+			"title": "Field2",
+			"width": 1,
+			"row": {
+				"3": 7
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 1,
+						"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Field1\"][\"dimmer0_value\"]",
+						"on_text": "ON - ACTIVE",
+						"off_text": "ON- INACTIVE",
+						"apikey": "65abad6a92f1a8f9cc34e0b71034ed81",
+						"indicatortype": "dimmer",
+						"indicatormode": "active_high_EQ",
+						"threshold": "100",
+						"instance": 0,
+						"switchid": 0
+					}
+				},
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Field1\"][\"dimmer0_value\"]",
+						"on_text": "OFF - Active",
+						"off_text": "OFF - Inactive",
+						"apikey": "65abad6a92f1a8f9cc34e0b71034ed81",
+						"indicatortype": "dimmer",
+						"indicatormode": "active_high_EQ",
+						"threshold": 0,
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		},
+		{
+			"title": "Field3",
+			"width": 1,
+			"row": {
+				"3": 11
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 1,
+						"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Field1\"][\"dimmer0_value\"]",
+						"on_text": "ON - ACTIVE",
+						"off_text": "ON- INACTIVE",
+						"apikey": "abd974fb9ad541b972cd3bf328f5a710",
+						"indicatortype": "dimmer",
+						"indicatormode": "active_high_EQ",
+						"threshold": "100",
+						"instance": 0,
+						"switchid": 0
+					}
+				},
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Field1\"][\"dimmer0_value\"]",
+						"on_text": "OFF - Active",
+						"off_text": "OFF - Inactive",
+						"apikey": "abd974fb9ad541b972cd3bf328f5a710",
+						"indicatortype": "dimmer",
+						"indicatormode": "active_high_EQ",
+						"threshold": 0,
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		},
+		{
+			"title": "Field4",
+			"width": 1,
+			"row": {
+				"3": 15
+			},
+			"col": {
+				"3": 1
+			},
+			"col_width": 1,
+						"widgets": [
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Field1\"][\"dimmer0_value\"]",
+						"on_text": "ON - ACTIVE",
+						"off_text": "ON- INACTIVE",
+						"apikey": "c79fc36b85fe4f64adada40786732d34",
+						"indicatortype": "dimmer",
+						"indicatormode": "active_high_EQ",
+						"threshold": "100",
+						"instance": 0,
+						"switchid": 0
+					}
+				},
+				{
+					"type": "indicator",
+					"settings": {
+						"value": "datasources[\"Field1\"][\"dimmer0_value\"]",
+						"on_text": "OFF - Active",
+						"off_text": "OFF - Inactive",
+						"apikey": "c79fc36b85fe4f64adada40786732d34",
+						"indicatortype": "dimmer",
+						"indicatormode": "active_high_EQ",
+						"threshold": 0,
+						"instance": 0,
+						"switchid": 0
+					}
+				}
+			]
+		}
+	],
+	"datasources": [
+		{
+			"name": "Field1",
+			"type": "JSON",
+			"settings": {
+				"url": "https://helmsmart-led-specialists.herokuapp.com/freeboard_dimmer_values",
+				"apikey": "0e76d79a98ebd100f26187f1c57c1ab2",
+				"refresh": 30,
+				"span": "2min",
+				"resolution": "300",
+				"source": "",
+				"instance": "0",
+				"index": "0",
+				"type": "",
+				"timezone": "UTC",
+				"units": "US",
+				"mode": "median"
+			}
+		},
+		{
+			"name": "Field2",
+			"type": "JSON",
+			"settings": {
+				"url": "https://helmsmart-led-specialists.herokuapp.com/freeboard_environmental",
+				"apikey": "65abad6a92f1a8f9cc34e0b71034ed81",
+				"refresh": 30,
+				"span": "2min",
+				"resolution": "300",
+				"source": "",
+				"instance": "0",
+				"index": "0",
+				"type": "",
+				"timezone": "UTC",
+				"units": "US",
+				"mode": "median"
+			}
+		},
+		{
+			"name": "Field3",
+			"type": "JSON",
+			"settings": {
+				"url": "https://helmsmart-led-specialists.herokuapp.com/freeboard_dimmer_values",
+				"apikey": "abd974fb9ad541b972cd3bf328f5a710",
+				"refresh": 30,
+				"span": "2min",
+				"resolution": "300",
+				"source": "",
+				"instance": "0",
+				"index": "0",
+				"type": "",
+				"timezone": "UTC",
+				"units": "US",
+				"mode": "median"
+			}
+		},
+		{
+			"name": "Field4",
+			"type": "JSON",
+			"settings": {
+				"url": "https://helmsmart-led-specialists.herokuapp.com/freeboard_dimmer_values",
+				"apikey": "c79fc36b85fe4f64adada40786732d34",
+				"refresh": 30,
+				"span": "2min",
+				"resolution": "300",
+				"source": "",
+				"instance": "0",
+				"index": "0",
+				"type": "",
+				"timezone": "UTC",
+				"units": "US",
+				"mode": "median"
+			}
+		}
+	],
+	"columns": null
+}
