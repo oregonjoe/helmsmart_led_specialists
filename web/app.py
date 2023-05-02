@@ -6476,8 +6476,8 @@ def freeboard_winddata():
             ts = int((mydatetime.timestamp() + tzoffset) * 1000 )
             ##log.info('freeboard_environmental:: ts %s:  ' % ts)
           
-          average_windspeed.append( {'epoch':ts, 'value':avgwindspeed})
-          average_winddir.append( {'epoch':ts, 'value':avgwinddir})
+            average_windspeed.append( {'epoch':ts, 'value':avgwindspeed})
+            average_winddir.append( {'epoch':ts, 'value':avgwinddir})
 
       callback = request.args.get('callback')
       myjsondate = mydatetimetz.strftime("%B %d, %Y %H:%M:%S")
