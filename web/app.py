@@ -13214,10 +13214,13 @@ def freeboard_dimmer_values():
 
       log.info('freeboard_dimmer_values:  InfluxDB-Cloud points%s:', points)
 
-      if point['time'] is not None:
+      for point in points:
+        #log.info('freeboard_dimmer_values:  InfluxDB-Cloud point%s:', point)
+        
+        if point['time'] is not None:
           mydatetimestr = str(point['time'])
           ##log.info('freeboard_environmental:: mydatetimestr %s:  ' % mydatetimestr)
-          
+
           # convert string to datetime opject
           mydatetime = datetime.datetime.strptime(mydatetimestr, '%Y-%m-%dT%H:%M:%S%z')
           ##log.info('freeboard_environmental:: mydatetime %s:  ' % mydatetime)
@@ -13240,8 +13243,6 @@ def freeboard_dimmer_values():
           ts = int((mydatetime.timestamp() + tzoffset) * 1000 )
           ##log.info('freeboard_environmental:: ts %s:  ' % ts)
 
-          
-  
         statusvalues=[]
         
         if point['dv0'] is not None:
