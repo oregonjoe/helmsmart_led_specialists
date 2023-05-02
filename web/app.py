@@ -6475,8 +6475,6 @@ def freeboard_winddata():
             # adjust GMT time for slected timezone for display purposes
             ts = int((mydatetime.timestamp() + tzoffset) * 1000 )
             ##log.info('freeboard_environmental:: ts %s:  ' % ts)
-
-          
           
           average_windspeed.append( {'epoch':ts, 'value':avgwindspeed})
           average_winddir.append( {'epoch':ts, 'value':avgwinddir})
