@@ -186,6 +186,130 @@ mc = pylibmc.Client(mcservers, binary=True,
 
 
 @app.route('/')
+@app.route('/index')
+def index():
+
+    log.info("index.html: session data:%s", session)
+    
+    adminid=""
+
+    if 'admin' in request.form:
+      adminid = request.form['admin']
+      
+    try:
+      
+      if session['profile'] is not None:
+        try:
+          mydata = session['profile']
+          log.info("index.html: customdata:%s", mydata)
+         
+
+          if mydata['name'] is not None:
+            myusername = mydata['name']
+            myusername = mydata['email']
+            log.info("index.html: myusername:%s", myusername)
+
+
+          """
+          if mydata['devices'] is not None:
+            mydevices = mydata['devices']
+            log.info("index.html: mydevices:%s", mydevices)
+
+            for device in mydevices:
+              log.info("index.html: mydevice  %s:%s", device['devicename'], device['deviceid'])
+          """
+
+        except TypeError, e:
+          log.info('index.html profile: TypeError in geting deviceid  %s:  ' % str(e))
+                
+        except KeyError, e:
+          log.info('index.html profile: KeyError in geting deviceid  %s:  ' % str(e))
+
+        except NameError, e:
+          log.info('index.html profile: NameError in geting deviceid  %s:  ' % str(e))
+                
+        except IndexError, e:
+          log.info('index.html profile: IndexError in geting deviceid  %s:  ' % str(e))  
+          
+        except:
+          e = sys.exc_info()[0]
+          log.info('index.html profile: Error in geting user.custom_data  %s:  ' % str(e))
+          pass
+
+        try:
+
+          # open database connection
+          conn = db_pool.getconn()
+          
+          if myusername is not None:
+
+
+            session['username'] = myusername
+            
+            log.info("index.html: email:%s", myusername )
+
+            query = "select userid from user_devices where useremail = %s group by userid"
+
+            cursor = conn.cursor()
+            cursor.execute(query, [myusername])
+            i = cursor.fetchone()       
+            if cursor.rowcount > 0:
+
+                session['userid'] = str(i[0])
+                log.info('index.html: got user from database userid is  %s:  ' , session['userid'] )
+                
+            else:
+                session['userid'] = hash_string('helmsmart@mockmyid.com')
+                log.info('index.html: using default userid is  %s:  ' , session['userid'] )
+                
+            log.info('index.html: userid is  %s:  ' , session['userid'] )
+
+          # close database connection
+          # cursor.close
+          db_pool.putconn(conn)
+            
+        except:
+          e = sys.exc_info()[0]
+          log.info('index.html: Error in geting user.email  %s:  ' % str(e))
+          # close database connection
+          # cursor.close
+          db_pool.putconn(conn)          
+          pass
+
+
+        return render_template('index.html', user=session['profile'], env=env)
+
+      
+    except TypeError, e:
+      log.info('index.html: TypeError in geting deviceid  %s:  ' % str(e))
+            
+    except KeyError, e:
+      log.info('index.html: KeyError in geting deviceid  %s:  ' % str(e))
+
+    except NameError, e:
+      log.info('index.html: NameError in geting deviceid  %s:  ' % str(e))
+            
+    except IndexError, e:
+      log.info('index.html: IndexError in geting deviceid  %s:  ' % str(e))  
+      
+    except:
+      e = sys.exc_info()[0]
+      log.info('index.html: Error in geting user  %s:  ' % str(e))
+      pass
+
+
+    return render_template('index.html',  env=env)
+    #response = make_response(render_template('index.html', features = []))
+    #response.headers['Cache-Control'] = 'public, max-age=0'
+    #return response
+
+
+
+
+
+
+
+
 @app.route('/dashboards_list')
 @cross_origin()
 def dashboards_list():
