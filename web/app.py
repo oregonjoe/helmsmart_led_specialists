@@ -1443,7 +1443,7 @@ def getuser_endpoint():
       log.info('getuser:  KeyError in geting deviceid  %s:  ', userid)
       log.info('getuser:  KeyError in geting deviceid  %s:  ' % str(e))
 
-  except NameErro as e:
+  except NameError as e:
       log.info('getuser:  NameError in geting deviceid  %s:  ', userid)
       log.info('getuser:  NameError in geting deviceid  %s:  ' % str(e))
           
