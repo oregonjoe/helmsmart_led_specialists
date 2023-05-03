@@ -1298,6 +1298,150 @@ def getdashboardlists(userid):
 
     return ""
 
+
+
+@app.route('/getuser')
+def getuser_endpoint():
+
+  try:  
+    conn = db_pool.getconn()
+
+  except:
+    e = sys.exc_info()[0]
+    log.info("getuser_endpoint error - db_pool.getconn %s", deviceid)
+    log.info('getuser_endpoint error: db_pool.getconn %s:  ' % e)
+    db_pool.closeall()  
+
+    return jsonify( message='Could not open a connection', status='error')
+
+
+  gettype = request.args.get('gettype', 'devices')
+  userid = request.args.get('userid', '4d231fb3a164c5eeb1a8634d34c578eb')
+  deviceid = request.args.get('deviceid', '000000000000')
+  pagetype = request.args.get('pagetype', 0)
+  prefkey = request.args.get('prefkey', 0)
+
+  query = "select devicename from user_devices where userid = %s"
+
+  log.info('getuser_endpoint: deviceid %s:  ', deviceid)
+  
+  
+  try:
+    # first check db to see if user id is matched to device id
+    cursor = conn.cursor()
+    cursor.execute(query, (userid,))
+    i = cursor.fetchone()
+    # if not then just exit
+    if cursor.rowcount == 0:
+        log.info('getuser_endpoint: No devices found for userid %s:  ', userid)
+        return jsonify( message='No Userid  match', status='error')
+
+
+    log.info('getuser_endpoint: devices found for userid %s:  ', userid)
+
+    
+    if gettype == 'devices':
+        sqlstr = 'select * from getuserdevices(%s);'   
+        cursor.execute(sqlstr, (userid,))
+    elif gettype == 'devicekeys':
+        sqlstr = 'select devicename, deviceid, deviceapikey from user_devices where userid = %s;'
+        cursor.execute(sqlstr, (userid,))
+    elif gettype == 'values':
+        sqlstr = 'select * from user_devices where userid = %s;'   
+        cursor.execute(sqlstr, (userid,))
+    elif gettype == 'pageprefnames':
+        sqlstr = 'select * from getuserpageprefnames(%s,%s);'   
+        cursor.execute(sqlstr, (userid, pagetype))
+    elif gettype == 'pageprefs':
+        sqlstr = 'select * from getuserpageprefs(%s,%s,%s);'   
+        cursor.execute(sqlstr, (userid, pagetype, prefkey))
+    elif gettype == 'tempodb_pageprefnames':
+        sqlstr = 'select * from gettempodbuserpageprefnames(%s,%s, %s);'   
+        cursor.execute(sqlstr, (userid, deviceid, pagetype))
+    elif gettype == 'tempodb_pageprefs':
+        sqlstr = 'select * from gettempodbuserpageprefs(%s,%s,%s);'   
+        cursor.execute(sqlstr, (userid, pagetype, prefkey))
+    elif gettype == 'AlertIDs':
+        sqlstr = 'select messagekey, message_json, startdatetime, enddatetime from post_messages where DeviceID = %s;'   
+        cursor.execute(sqlstr, (deviceid,))
+        #cursor.execute(sqlstr, (userid,))
+    elif gettype == 'AlertIDDetail':
+        sqlstr = 'select message_json, startdatetime from post_messages where messagekey = %s;'   
+        cursor.execute(sqlstr, (prefkey,))
+        
+    elif gettype == 'alexaprefs':
+        sqlstr = 'select messagekey, message_json from alexa_prefs where userid = %s;'   
+        cursor.execute(sqlstr, (userid,))
+
+    elif gettype == 'meshdimmerprefnames':
+        sqlstr = 'select prefidkey, prefname from user_meshdimmer_prefs where userid = %s and deviceid = %s;'   
+        cursor.execute(sqlstr, (userid, deviceid))
+
+    elif gettype == 'meshdimmerprefdetail':
+        sqlstr = 'select prefidkey, prefname, gatewayinstance, SystemClockPGNID, DimmerLabels, scenes_json from user_meshdimmer_prefs where prefidkey  = %s;'   
+        cursor.execute(sqlstr, (prefkey,))
+
+
+        
+    elif gettype == 'timmerprefs':
+        sqlstr = 'select messagekey, message_json from timmer_prefs where userid = %s;'   
+        cursor.execute(sqlstr, (userid,))
+
+       
+    elif gettype == 'scheduleprefs':
+        sqlstr = 'select messagekey, message_json from timmer_prefs where userid = %s and deviceid = %s;'     
+        cursor.execute(sqlstr, (userid, deviceid))
+
+
+
+        
+    else:
+        return jsonify(result="OK")
+    
+    records = cursor.fetchall()
+
+
+    log.info('getuser_endpoint: records found for userid %s:  ', records)    
+
+    def type_for(type_code):
+      return {
+        23: 'INTEGER',
+        1043: 'STRING',
+        1114: 'DATETIME'    
+      }.get(type_code)
+
+
+    schema = dict(
+      fields= [
+        dict(name=c.name, type=type_for(c.type_code))
+        for c in cursor.description
+      ]
+    )
+
+    result = json.dumps(
+      dict(
+        schema=schema,
+        records=records
+      ),
+      cls=DateEncoder
+    )
+
+
+    log.info('getuser_endpoint: result found for userid %s:  ', result)
+    
+    response = make_response(result)
+    response.headers['content-type'] = "application/json"
+    return response
+
+  except:
+    e = sys.exc_info()[0]
+    log.info("getuser_endpoint error - user already exixts %s", deviceid)
+    log.info('getuser_endpoint error: Error in adding device %s:  ' % e)
+  
+  finally:
+    db_pool.putconn(conn)    
+  
+
 ### hash ###
 def hash_string(string):
     #salted_hash = string + application.config['SECRET_KEY']
