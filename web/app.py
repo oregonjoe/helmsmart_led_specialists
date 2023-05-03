@@ -1418,6 +1418,8 @@ def getuser_endpoint():
       ]
     )
 
+    log.info('getuser_endpoint: schema found for userid %s:  ', schema)
+    
     result = json.dumps(
       dict(
         schema=schema,
@@ -1433,10 +1435,29 @@ def getuser_endpoint():
     response.headers['content-type'] = "application/json"
     return response
 
+  except TypeError as e:
+      log.info('getuser:  TypeError in geting deviceid  %s:  ', userid)
+      log.info('getuser:  TypeError in geting deviceid  %s:  ' % str(e))
+          
+  except KeyError as e:
+      log.info('getuser:  KeyError in geting deviceid  %s:  ', userid)
+      log.info('getuser:  KeyError in geting deviceid  %s:  ' % str(e))
+
+  except NameErro as e:
+      log.info('getuser:  NameError in geting deviceid  %s:  ', userid)
+      log.info('getuser:  NameError in geting deviceid  %s:  ' % str(e))
+          
+  except IndexError as e:
+      log.info('getuser:  IndexError in geting deviceid  %s:  ', userid)
+      log.info('getuser:  IndexError in geting deviceid  %s:  ' % str(e))  
+
+
+
+
   except:
     e = sys.exc_info()[0]
-    log.info("getuser_endpoint error - user already exixts %s", deviceid)
-    log.info('getuser_endpoint error: Error in adding device %s:  ' % e)
+    log.info("getuser_endpoint error -  %s", deviceid)
+    log.info('getuser_endpoint error: Error %s:  ' % e)
   
   finally:
     db_pool.putconn(conn)    
