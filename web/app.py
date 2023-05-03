@@ -564,6 +564,16 @@ def help():
     response.headers['Cache-Control'] = 'public, max-age=0'
     return response
 
+@app.route('/nettimers') 
+def nettimers():
+
+  return render_template(
+    'nettimers_boden.html',
+    features = [],
+  )
+
+
+
 
 ### user functions #####
 
