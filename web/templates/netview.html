@@ -1481,7 +1481,7 @@ function handleGetDeviceData(response)
       // devicedataurl = "http://www.boatlogger.com/Account/ActivateDevice?deviceId=a5069b96637473d7701fa11eb9baad3d&deviceType=SeaSmart_lite" ;
 
 
-      devicedataurl = "http://pushsmartdata.herokuapp.com/boatlogger_regtracker?publickey=" + publictoken  + '&userkey=' + myuserKey + '&deviceid=' + myDeviceKey + '&devicename=' + myDeviceName ;
+      devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/boatlogger_regtracker?publickey=" + publictoken  + '&userkey=' + myuserKey + '&deviceid=' + myDeviceKey + '&devicename=' + myDeviceName ;
 
 
       // devicedataurl =  devicedataurl  + "&blwskey=" + document.getElementById("BLWSKeyInput").value ;
@@ -1543,7 +1543,7 @@ function getDeviceList(userid)
 
 	var devicedataurl;
 	
-    devicedataurl = "http://pushsmartdata.herokuapp.com/getuser?gettype=devices&userid=" + userid;
+    devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/getuser?gettype=devices&userid=" + userid;
 
     return $.ajax({
     //async: false,
@@ -1581,10 +1581,10 @@ function getDeviceList(userid)
 <div>
   <center>
   {% if session['userid'] %}
-     <a href="http://pushsmartdata.herokuapp.com" id="login" class="persona-button">
+     <a href="http://helmsmart-led-specialists.herokuapp.com" id="login" class="persona-button">
     <span>HelmSmart: {{session['username']}}</span></a>
   {% else %}
-    <a href="http://pushsmartdata.herokuapp.com" id="login" class="persona-button">
+    <a href="http://helmsmart-led-specialists.herokuapp.com" id="login" class="persona-button">
       <span>HelmSmart: Guest</span></a>
   {% endif %}
   </center>
