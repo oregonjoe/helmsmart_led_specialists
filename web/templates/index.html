@@ -79,7 +79,7 @@ var myusername
 
  $("#logout").click(function(e) {
             e.preventDefault();
-window.location.href = '/auth0logout';
+			window.location.href = '/auth0logout';
 			 });
 
 	 {% else %}
@@ -88,14 +88,15 @@ window.location.href = '/auth0logout';
  
   $("#login").click(function(e) {
             e.preventDefault();
+			/*
 		auth.authorize({
 				audience: 'https://'+AUTH0_DOMAIN+'/userinfo', // you can also set this on the .env file and put API_AUDIENCE instead
 				scope: 'openid profile',
 				responseType: 'code',
 				redirectUri: AUTH0_CALLBACK_URL
 			  }); 
-			
-			
+			*/
+			window.location.href = '/login';
           });
  {% endif %}
 
@@ -254,21 +255,20 @@ var myusername;
         </tr>
         <tr>
           <td>
-            <!-- <a href="{{ url_for('mapsmart') }}"> -->
+      
 			 <a href="http://pushsmartdata.herokuapp.com/mapsmart"> 
-              <!-- <a href="http://www.mapsmart.net/static/MapSmart/MapSmart.htm?userid=1">  -->
+              
               <img alt="MapSmart.net" height="150" width="150" class="auto-style14" src="{{ url_for('static', filename='img/HemSmartLogos_MapSmart._200W.jpg' ) }}">
             </a>
           </td>
           <td>  
-            <!-- <a href="GraphSmart.htm?userid=1"> -->
-             <!-- <a href="{{ url_for('graphsmart') }}"> -->
+   
 			   <a href="http://pushsmartdata.herokuapp.com/graphsmart">
               <img alt="GraphSmart.net" height="150" width="150" class="auto-style14" src="{{ url_for('static', filename='img/HemSmartLogos_GraphSmart_200W.jpg' ) }}">
             </a>
           </td>
           <td>
-            <!--  <a href="{{ url_for('alertsmart') }}"> -->
+            
 			<a href="http://pushsmartdata.herokuapp.com/alertsmart"> 
               <img alt="AlertSmart.net" height="150" width="150" class="auto-style14" src="{{ url_for('static', filename='img/HemSmartLogos_AlertSmart_200W.jpg' ) }}">
           </a>
@@ -276,21 +276,19 @@ var myusername;
         </tr>
         <tr>
           <td>
-            <!-- <a href="GraphSmart.htm?userid=1"> -->
-            <!-- <a href="{{ url_for('netgauges') }}"> -->
+         
 			<a href="http://pushsmartdata.herokuapp.com/netgauges">
             <img alt="netGauges.net" height="150" width="150" class="auto-style14" src="{{ url_for('static', filename='img/HemSmartLogos_netGauges_200W.jpg' ) }}">
             </a>
           </td>
           <td>
-            <!-- <a href="netGraphs.htm?userid=1"> -->
-             <!--  <a href="{{ url_for('netgraphs') }}"> -->
+         
 			  <a href="http://pushsmartdata.herokuapp.com/netgraphs">
               <img alt="netGraphs.net" height="150" width="150" class="auto-style14" src="{{ url_for('static', filename='img/HemSmartLogos_netGraphs_200W.jpg' ) }}">
             </a>
           </td>
           <td>
-            <!-- <a href="{{ url_for('nethelm') }}"> -->
+          
 			<a href="http://pushsmartdata.herokuapp.com/nethelm">
               <img alt="netHelm.net" height="150" width="150" class="auto-style14" src="{{ url_for('static', filename='img/HemSmartLogos_netHelm_200W.jpg' ) }}">
           </a>
