@@ -697,7 +697,13 @@ def nettimers():
   )
 
 
+@app.route('/netview')
+def netview():
 
+  return render_template(
+    'netview.html',
+    features = [],
+  )
 
 ### user functions #####
 
