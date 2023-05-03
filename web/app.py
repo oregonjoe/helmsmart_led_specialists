@@ -219,16 +219,16 @@ def index():
               log.info("index.html: mydevice  %s:%s", device['devicename'], device['deviceid'])
           """
 
-        except TypeError, e:
+        except TypeError as e:
           log.info('index.html profile: TypeError in geting deviceid  %s:  ' % str(e))
                 
-        except KeyError, e:
+        except KeyError as e:
           log.info('index.html profile: KeyError in geting deviceid  %s:  ' % str(e))
 
-        except NameError, e:
+        except NameError as e:
           log.info('index.html profile: NameError in geting deviceid  %s:  ' % str(e))
                 
-        except IndexError, e:
+        except IndexError as e:
           log.info('index.html profile: IndexError in geting deviceid  %s:  ' % str(e))  
           
         except:
@@ -280,16 +280,16 @@ def index():
         return render_template('index.html', user=session['profile'], env=env)
 
       
-    except TypeError, e:
+    except TypeError as e:
       log.info('index.html: TypeError in geting deviceid  %s:  ' % str(e))
             
-    except KeyError, e:
+    except KeyError as e:
       log.info('index.html: KeyError in geting deviceid  %s:  ' % str(e))
 
-    except NameError, e:
+    except NameError as e:
       log.info('index.html: NameError in geting deviceid  %s:  ' % str(e))
             
-    except IndexError, e:
+    except IndexError as e:
       log.info('index.html: IndexError in geting deviceid  %s:  ' % str(e))  
       
     except:
