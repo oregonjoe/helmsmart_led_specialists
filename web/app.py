@@ -301,10 +301,33 @@ def nettimers():
   )
 
 
+@app.route('/netview')
+def netview():
+
+  return render_template(
+    'netview.html',
+    features = [],
+  )
+
+@app.route('/alertsmart')
+def alertsmart():
+  #userid=""
+  #userid = request.args.get('userid','')
+
+  return render_template(
+    'netalerts.html',
+    #admin_userid=userid,
+    features = [],
+  )
 
 
+@app.route('/meshdimmer')
+def meshdimmer():
 
-
+  return render_template(
+    'meshdimmer.html',
+    features = [],
+  )
 
 
 
