@@ -186,6 +186,122 @@ mc = pylibmc.Client(mcservers, binary=True,
 
 
 @app.route('/')
+@cross_origin()
+def index():
+
+    log.info("index.html: Start")
+
+      
+    try:
+      
+      if session['profile'] is not None:
+        try:
+          mydata = session['profile']
+          log.info("index.html: customdata:%s", mydata)
+         
+
+          if mydata['name'] is not None:
+            #myusername = mydata['name']
+            myusername = mydata['email']
+            log.info("index.html: myusername:%s", myusername)
+
+
+          """
+          if mydata['devices'] is not None:
+            mydevices = mydata['devices']
+            log.info("index.html: mydevices:%s", mydevices)
+
+            for device in mydevices:
+              log.info("index.html: mydevice  %s:%s", device['devicename'], device['deviceid'])
+          """
+          
+        except:
+          e = sys.exc_info()[0]
+          log.info('index.html: Error in geting user.custom_data  %s:  ' % str(e))
+          pass
+
+        try:
+          if myusername is not None:
+
+            conn = db_pool.getconn()
+            session['username'] = myusername
+            
+            log.info("index.html: email:%s", myusername )
+
+            query = "select userid from user_devices where useremail = %s group by userid"
+
+            cursor = conn.cursor()
+            cursor.execute(query, [myusername])
+            i = cursor.fetchone()       
+            if cursor.rowcount > 0:
+
+                session['userid'] = str(i[0])
+                log.info('index.html: got user from database userid is  %s:  ' , session['userid'] )
+                
+            else:
+                session['userid'] = hash_string('helmsmart@mockmyid.com')
+                log.info('index.html: using default userid is  %s:  ' , session['userid'] )
+                
+            log.info('dashboards_list.html: userid is  %s:  ' , session['userid'] )
+            # cursor.close
+            db_pool.putconn(conn)
+            
+        except:
+          e = sys.exc_info()[0]
+          log.info('index.html: Error in geting user.email  %s:  ' % str(e))
+          pass
+
+
+        return render_template('index.html', user=session['profile'], env=env)
+        #return render_template("authohome.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
+      
+
+
+    except TypeError as e:
+      #log.info('dashboards_list: TypeError in  update pref %s:  ', userid)
+      log.info('index: TypeError in  update pref  %s:  ' % str(e))
+
+    except ValueError as e:
+      #log.info('dashboards_list: ValueError in  update pref  %s:  ', userid)
+      log.info('index: ValueError in  update pref %s:  ' % str(e))
+      
+    except KeyError as e:
+      #log.info('dashboards_list: KeyError in  update pref  %s:  ', userid)
+      log.info('index: KeyError in  update pref  %s:  ' % str(e))
+
+    except NameError as e:
+      #log.info('dashboards_list: NameError in  update pref  %s:  ', userid)
+      log.info('index: NameError in  update pref %s:  ' % str(e))
+          
+    except IndexError as e:
+      #log.info('dashboards_list: IndexError in  update pref  %s:  ', userid)
+      log.info('index: IndexError in  update pref  %s:  ' % str(e))  
+
+    except:
+      e = sys.exc_info()[0]
+      log.info('index.html: Error in geting user  %s:  ' % str(e))
+      pass
+
+    
+    return render_template('index.html',  env=env)
+    #return render_template("authohome.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
+
+    #response = make_response(render_template('index.html', features = []))
+    #response.headers['Cache-Control'] = 'public, max-age=0'
+    #return response
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route('/dashboards_list')
 @cross_origin()
 def dashboards_list():
