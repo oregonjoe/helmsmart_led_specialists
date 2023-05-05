@@ -292,7 +292,13 @@ def index():
 
 
 
+@app.route('/nettimers') 
+def nettimers():
 
+  return render_template(
+    'nettimers.html',
+    features = [],
+  )
 
 
 
