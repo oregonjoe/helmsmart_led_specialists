@@ -1058,6 +1058,153 @@ def getuseremail(deviceapikey):
     return ""
 
 
+@app.route('/get_influxdbcloud_series')
+def get_influxdbcloud_series():
+  deviceid = request.args.get('deviceid', '000000000000')
+  startepoch = request.args.get('startepoch', 0)
+  endepoch = request.args.get('endepoch', 0)
+
+  response  = None
+
+  
+  host = 'hilldale-670d9ee3.influxcloud.net' 
+  port = 8086
+  username = 'helmsmart'
+  password = 'Salm0n16'
+  database = 'pushsmart-cloud'
+
+  measurement = "HS_" + str(deviceid)
+
+  log.info("get_influxdbcloud_series deviceid %s", deviceid)
+  
+  #db = influxdb.InfluxDBClient(host, port, username, password, database)
+  db = InfluxDBCloud(host, port, username, password, database,  ssl=True)
+
+  if  startepoch == 0 or  endepoch == 0:
+    query = ('select * from /deviceid:{}.*/  limit 1') \
+            .format(deviceid, startepoch, endepoch)
+  else:
+    #query = ('select * from /deviceid:{}.*/ where time > {}s and time < {}s  limit 1') \
+    #        .format(deviceid, startepoch, endepoch)
+
+    query = ("select  * from {} "
+           "where deviceid='{}'  AND  time > {}s AND  time < {}s group by * limit 1") \
+        .format(measurement, deviceid,
+              startepoch, endepoch)
+    
+  log.info("get_influxdbcloud_series Query %s", query)
+    
+  try:
+    response= db.query(query)
+
+  except InfluxDBClientError as e:
+    log.info('get_influxdbcloud_series: Exception InfluxDBClientError in InfluxDB  %s:  ' % str(e))
+    return jsonify( message='Error in inFluxDB series InfluxDBClientError', status='error')
+    
+  except InfluxDBServerError as e:
+    log.info('get_influxdbcloud_series: Exception InfluxDBServerError in InfluxDB  %s:  ' % str(e))
+    return jsonify( message='Error in inFluxDB series InfluxDBServerError', status='error')
+    
+  except:
+    #log.info('Telemetrypost: Error in geting Telemetry parameters %s:  ', posttype)
+    e = sys.exc_info()[0]
+    log.info('get_influxdbcloud_series: Error in geting inFluxDB data %s:  ' % e)
+    
+    return jsonify( message='Error in inFluxDB series query 2', status='error')
+    
+  if not response:
+    #print 'inFluxDB Exception1:', response.response.successful, response.response.reason 
+    return jsonify( message='No response to return 1' , status='error')
+
+  try:
+
+ 
+    keys = response.raw.get('series',[])
+    jsondata = []
+    keyslen = len(keys)
+    
+    for key in keys:
+      keytags = key['tags']
+      keyvalues = key['values']
+      keyvalue = keyvalues[0]
+
+
+      fields = {}
+      for keyi, val in zip(key['columns'], keyvalue):
+        fields[keyi] = val
+      #source = fields['source']
+      source = fields.get('source', '.*')
+      keytags['source']=source
+          
+      #jsondata.append({'tags':keytags, 'source':source} )
+      jsondata.append(keytags)
+          
+
+    #return jsonify(keys = jsondata ,  status='success')
+    return jsonify(series = jsondata, keyslen=keyslen ,  status='success')
+    """  
+    keys = response.keys()
+    #log.info("freeboard Get InfluxDB series keys %s", keys)
+
+    
+    jsondata=[]
+    for series in keys:
+      log.info("get_influxdbcloud_series Get InfluxDB series key %s", series)
+      #log.info("freeboard Get InfluxDB series tag %s ", series[1])
+      #log.info("freeboard Get InfluxDB series tag deviceid %s ", series[1]['deviceid'])
+      #strvalue = {'deviceid':series[1]['deviceid'], 'sensor':series[1]['sensor'], 'source': series[1]['source'], 'instance':series[1]['instance'], 'type':series[1]['type'], 'parameter': series[1]['parameter'], 'epoch':endepoch}
+      strvalue = {'deviceid':series[1]['deviceid'], 'sensor':series[1]['sensor'], 'source':'FF', 'instance':series[1]['instance'], 'type':series[1]['type'], 'parameter': series[1]['parameter'], 'epoch':endepoch}
+
+
+      jsondata.append(strvalue)
+      #for tags in series[1]:
+      #  log.info("freeboard Get InfluxDB tags %s ", tags)
+ 
+    #return jsonify( message='freeboard_createInfluxDB', status='error')
+    return jsonify(series = jsondata, keyslen=keyslen ,  status='success')
+    """
+  
+  except TypeError as e:
+    #log.info('freeboard: Type Error in InfluxDB mydata append %s:  ', response)
+    log.info('get_influxdbcloud_series: Type Error in InfluxDB  %s:  ' % str(e))
+
+  except KeyError as e:
+    #log.info('freeboard: Key Error in InfluxDB mydata append %s:  ', response)
+    log.info('get_influxdbcloud_series: Key Error in InfluxDB  %s:  ' % str(e))
+
+  except NameError as e:
+    #log.info('freeboard: Name Error in InfluxDB mydata append %s:  ', response)
+    log.info('get_influxdbcloud_series: Name Error in InfluxDB  %s:  ' % str(e))
+            
+  except IndexError as e:
+    #log.info('freeboard: Index error in InfluxDB mydata append %s:  ', response)
+    log.info('get_influxdbcloud_series: Index Error in InfluxDB  %s:  ' % str(e))  
+            
+  except ValueError as e:
+    #log.info('freeboard: Index error in InfluxDB mydata append %s:  ', response)
+    log.info('get_influxdbcloud_series: Value Error in InfluxDB  %s:  ' % str(e))
+
+  except AttributeError as e:
+    #log.info('freeboard: Index error in InfluxDB mydata append %s:  ', response)
+    log.info('get_influxdbcloud_series: AttributeError in InfluxDB  %s:  ' % str(e))     
+
+  #except InfluxDBCloud.exceptions.InfluxDBClientError, e:
+    #log.info('freeboard_createInfluxDB: Exception Error in InfluxDB  %s:  ' % str(e))
+
+  except InfluxDBClientError as e:
+    log.info('get_influxdbcloud_series: Exception Error in InfluxDBClientError  %s:  ' % str(e))
+
+  except InfluxDBServerError as e:
+    log.info('get_influxdbcloud_series: Exception Error in InfluxDBServerError  %s:  ' % str(e))
+   
+
+  except:
+    #log.info('freeboard: Error in InfluxDB mydata append %s:', response)
+    e = sys.exc_info()[0]
+    log.info("get_influxdbcloud_series: Error: %s" % e)
+
+  return jsonify( message='freeboard_GetSeries', status='error')
+  
   
 ### dashboard functions ####
 
