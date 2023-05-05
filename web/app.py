@@ -174,12 +174,7 @@ mc = pylibmc.Client(mcservers, binary=True,
                     })
 
 
-class DateEncoder(json.JSONEncoder):
-  def default(self, obj):
-    if hasattr(obj, 'isoformat'):
-      return obj.isoformat()
-    else:
-      return str(obj)
+
 
 # Application routes for web server
 
@@ -191,130 +186,6 @@ class DateEncoder(json.JSONEncoder):
 
 
 @app.route('/')
-@app.route('/index')
-def index():
-
-    log.info("index.html: session data:%s", session)
-    
-    adminid=""
-
-    if 'admin' in request.form:
-      adminid = request.form['admin']
-      
-    try:
-      
-      if session['profile'] is not None:
-        try:
-          mydata = session['profile']
-          log.info("index.html: customdata:%s", mydata)
-         
-
-          if mydata['name'] is not None:
-            myusername = mydata['name']
-            myusername = mydata['email']
-            log.info("index.html: myusername:%s", myusername)
-
-
-          """
-          if mydata['devices'] is not None:
-            mydevices = mydata['devices']
-            log.info("index.html: mydevices:%s", mydevices)
-
-            for device in mydevices:
-              log.info("index.html: mydevice  %s:%s", device['devicename'], device['deviceid'])
-          """
-
-        except TypeError as e:
-          log.info('index.html profile: TypeError in geting deviceid  %s:  ' % str(e))
-                
-        except KeyError as e:
-          log.info('index.html profile: KeyError in geting deviceid  %s:  ' % str(e))
-
-        except NameError as e:
-          log.info('index.html profile: NameError in geting deviceid  %s:  ' % str(e))
-                
-        except IndexError as e:
-          log.info('index.html profile: IndexError in geting deviceid  %s:  ' % str(e))  
-          
-        except:
-          e = sys.exc_info()[0]
-          log.info('index.html profile: Error in geting user.custom_data  %s:  ' % str(e))
-          pass
-
-        try:
-
-          # open database connection
-          conn = db_pool.getconn()
-          
-          if myusername is not None:
-
-
-            session['username'] = myusername
-            
-            log.info("index.html: email:%s", myusername )
-
-            query = "select userid from user_devices where useremail = %s group by userid"
-
-            cursor = conn.cursor()
-            cursor.execute(query, [myusername])
-            i = cursor.fetchone()       
-            if cursor.rowcount > 0:
-
-                session['userid'] = str(i[0])
-                log.info('index.html: got user from database userid is  %s:  ' , session['userid'] )
-                
-            else:
-                session['userid'] = hash_string('helmsmart@mockmyid.com')
-                log.info('index.html: using default userid is  %s:  ' , session['userid'] )
-                
-            log.info('index.html: userid is  %s:  ' , session['userid'] )
-
-          # close database connection
-          # cursor.close
-          db_pool.putconn(conn)
-            
-        except:
-          e = sys.exc_info()[0]
-          log.info('index.html: Error in geting user.email  %s:  ' % str(e))
-          # close database connection
-          # cursor.close
-          db_pool.putconn(conn)          
-          pass
-
-
-        return render_template('index.html', user=session['profile'], env=env)
-
-      
-    except TypeError as e:
-      log.info('index.html: TypeError in geting deviceid  %s:  ' % str(e))
-            
-    except KeyError as e:
-      log.info('index.html: KeyError in geting deviceid  %s:  ' % str(e))
-
-    except NameError as e:
-      log.info('index.html: NameError in geting deviceid  %s:  ' % str(e))
-            
-    except IndexError as e:
-      log.info('index.html: IndexError in geting deviceid  %s:  ' % str(e))  
-      
-    except:
-      e = sys.exc_info()[0]
-      log.info('index.html: Error in geting user  %s:  ' % str(e))
-      pass
-
-
-    return render_template('index.html',  env=env)
-    #response = make_response(render_template('index.html', features = []))
-    #response.headers['Cache-Control'] = 'public, max-age=0'
-    #return response
-
-
-
-
-
-
-
-
 @app.route('/dashboards_list')
 @cross_origin()
 def dashboards_list():
@@ -693,22 +564,6 @@ def help():
     response.headers['Cache-Control'] = 'public, max-age=0'
     return response
 
-@app.route('/nettimers') 
-def nettimers():
-
-  return render_template(
-    'nettimers_boden.html',
-    features = [],
-  )
-
-
-@app.route('/netview')
-def netview():
-
-  return render_template(
-    'netview.html',
-    features = [],
-  )
 
 ### user functions #####
 
@@ -1302,171 +1157,6 @@ def getdashboardlists(userid):
     db_pool.putconn(conn)                       
 
     return ""
-
-
-
-@app.route('/getuser')
-def getuser_endpoint():
-
-  try:  
-    conn = db_pool.getconn()
-
-  except:
-    e = sys.exc_info()[0]
-    log.info("getuser_endpoint error - db_pool.getconn %s", deviceid)
-    log.info('getuser_endpoint error: db_pool.getconn %s:  ' % e)
-    db_pool.closeall()  
-
-    return jsonify( message='Could not open a connection', status='error')
-
-
-  gettype = request.args.get('gettype', 'devices')
-  userid = request.args.get('userid', '4d231fb3a164c5eeb1a8634d34c578eb')
-  deviceid = request.args.get('deviceid', '000000000000')
-  pagetype = request.args.get('pagetype', 0)
-  prefkey = request.args.get('prefkey', 0)
-
-  query = "select devicename from user_devices where userid = %s"
-
-  log.info('getuser_endpoint: deviceid %s:  ', deviceid)
-  
-  
-  try:
-    # first check db to see if user id is matched to device id
-    cursor = conn.cursor()
-    cursor.execute(query, (userid,))
-    i = cursor.fetchone()
-    # if not then just exit
-    if cursor.rowcount == 0:
-        log.info('getuser_endpoint: No devices found for userid %s:  ', userid)
-        return jsonify( message='No Userid  match', status='error')
-
-
-    log.info('getuser_endpoint: devices found for userid %s:  ', userid)
-
-    
-    if gettype == 'devices':
-        sqlstr = 'select * from getuserdevices(%s);'   
-        cursor.execute(sqlstr, (userid,))
-    elif gettype == 'devicekeys':
-        sqlstr = 'select devicename, deviceid, deviceapikey from user_devices where userid = %s;'
-        cursor.execute(sqlstr, (userid,))
-    elif gettype == 'values':
-        sqlstr = 'select * from user_devices where userid = %s;'   
-        cursor.execute(sqlstr, (userid,))
-    elif gettype == 'pageprefnames':
-        sqlstr = 'select * from getuserpageprefnames(%s,%s);'   
-        cursor.execute(sqlstr, (userid, pagetype))
-    elif gettype == 'pageprefs':
-        sqlstr = 'select * from getuserpageprefs(%s,%s,%s);'   
-        cursor.execute(sqlstr, (userid, pagetype, prefkey))
-    elif gettype == 'tempodb_pageprefnames':
-        sqlstr = 'select * from gettempodbuserpageprefnames(%s,%s, %s);'   
-        cursor.execute(sqlstr, (userid, deviceid, pagetype))
-    elif gettype == 'tempodb_pageprefs':
-        sqlstr = 'select * from gettempodbuserpageprefs(%s,%s,%s);'   
-        cursor.execute(sqlstr, (userid, pagetype, prefkey))
-    elif gettype == 'AlertIDs':
-        sqlstr = 'select messagekey, message_json, startdatetime, enddatetime from post_messages where DeviceID = %s;'   
-        cursor.execute(sqlstr, (deviceid,))
-        #cursor.execute(sqlstr, (userid,))
-    elif gettype == 'AlertIDDetail':
-        sqlstr = 'select message_json, startdatetime from post_messages where messagekey = %s;'   
-        cursor.execute(sqlstr, (prefkey,))
-        
-    elif gettype == 'alexaprefs':
-        sqlstr = 'select messagekey, message_json from alexa_prefs where userid = %s;'   
-        cursor.execute(sqlstr, (userid,))
-
-    elif gettype == 'meshdimmerprefnames':
-        sqlstr = 'select prefidkey, prefname from user_meshdimmer_prefs where userid = %s and deviceid = %s;'   
-        cursor.execute(sqlstr, (userid, deviceid))
-
-    elif gettype == 'meshdimmerprefdetail':
-        sqlstr = 'select prefidkey, prefname, gatewayinstance, SystemClockPGNID, DimmerLabels, scenes_json from user_meshdimmer_prefs where prefidkey  = %s;'   
-        cursor.execute(sqlstr, (prefkey,))
-
-
-        
-    elif gettype == 'timmerprefs':
-        sqlstr = 'select messagekey, message_json from timmer_prefs where userid = %s;'   
-        cursor.execute(sqlstr, (userid,))
-
-       
-    elif gettype == 'scheduleprefs':
-        sqlstr = 'select messagekey, message_json from timmer_prefs where userid = %s and deviceid = %s;'     
-        cursor.execute(sqlstr, (userid, deviceid))
-
-
-
-        
-    else:
-        return jsonify(result="OK")
-    
-    records = cursor.fetchall()
-
-
-    log.info('getuser_endpoint: records found for userid %s:  ', records)    
-
-    def type_for(type_code):
-      return {
-        23: 'INTEGER',
-        1043: 'STRING',
-        1114: 'DATETIME'    
-      }.get(type_code)
-
-
-    schema = dict(
-      fields= [
-        dict(name=c.name, type=type_for(c.type_code))
-        for c in cursor.description
-      ]
-    )
-
-    log.info('getuser_endpoint: schema found for userid %s:  ', schema)
-    
-    result = json.dumps(
-      dict(
-        schema=schema,
-        records=records
-      ),
-      cls=DateEncoder
-    )
-
-
-    log.info('getuser_endpoint: result found for userid %s:  ', result)
-    
-    response = make_response(result)
-    response.headers['content-type'] = "application/json"
-    return response
-
-  except TypeError as e:
-      log.info('getuser:  TypeError in geting deviceid  %s:  ', userid)
-      log.info('getuser:  TypeError in geting deviceid  %s:  ' % str(e))
-          
-  except KeyError as e:
-      log.info('getuser:  KeyError in geting deviceid  %s:  ', userid)
-      log.info('getuser:  KeyError in geting deviceid  %s:  ' % str(e))
-
-  except NameError as e:
-      log.info('getuser:  NameError in geting deviceid  %s:  ', userid)
-      log.info('getuser:  NameError in geting deviceid  %s:  ' % str(e))
-          
-  except IndexError as e:
-      log.info('getuser:  IndexError in geting deviceid  %s:  ', userid)
-      log.info('getuser:  IndexError in geting deviceid  %s:  ' % str(e))  
-
-
-
-
-  except:
-    e = sys.exc_info()[0]
-    log.info("getuser_endpoint error -  %s", deviceid)
-    log.info('getuser_endpoint error: Error %s:  ' % e)
-  
-  finally:
-    db_pool.putconn(conn)    
-  
 
 ### hash ###
 def hash_string(string):
@@ -5628,42 +5318,42 @@ def freeboard_rain_gauge():
         response= dbc.query(query)
         
     except TypeError as e:
-        log.info('freeboard: Type Error in InfluxDB mydata append %s:  ', response)
-        log.info('freeboard: Type Error in InfluxDB mydata append %s:  ' % str(e))
+        log.info('freeboard_rain_gauge: Type Error in InfluxDB mydata append %s:  ', response)
+        log.info('freeboard_rain_gauge: Type Error in InfluxDB mydata append %s:  ' % str(e))
             
     except KeyError as e:
-        log.info('freeboard: Key Error in InfluxDB mydata append %s:  ', response)
-        log.info('freeboard: Key Error in InfluxDB mydata append %s:  ' % str(e))
+        log.info('freeboard_rain_gauge: Key Error in InfluxDB mydata append %s:  ', response)
+        log.info('freeboard_rain_gauge: Key Error in InfluxDB mydata append %s:  ' % str(e))
 
     except NameError as e:
-        log.info('freeboard: Name Error in InfluxDB mydata append %s:  ', response)
-        log.info('freeboard: Name Error in InfluxDB mydata append %s:  ' % str(e))
+        log.info('freeboard_rain_gauge: Name Error in InfluxDB mydata append %s:  ', response)
+        log.info('freeboard_rain_gauge: Name Error in InfluxDB mydata append %s:  ' % str(e))
             
     except IndexError as e:
-        log.info('freeboard: Index error in InfluxDB mydata append %s:  ', response)
-        log.info('freeboard: Index Error in InfluxDB mydata append %s:  ' % str(e))  
+        log.info('freeboard_rain_gauge: Index error in InfluxDB mydata append %s:  ', response)
+        log.info('freeboard_rain_gauge: Index Error in InfluxDB mydata append %s:  ' % str(e))  
 
     except ValueError as e:
       #log.info('freeboard: Index error in InfluxDB mydata append %s:  ', response)
-      log.info('freeboard_createInfluxDB: Value Error in InfluxDB  %s:  ' % str(e))
+      log.info('freeboard_rain_gauge: Value Error in InfluxDB  %s:  ' % str(e))
 
     except AttributeError as e:
       #log.info('freeboard: Index error in InfluxDB mydata append %s:  ', response)
-      log.info('freeboard_createInfluxDB: AttributeError in InfluxDB  %s:  ' % str(e))     
+      log.info('freeboard_rain_gauge: AttributeError in InfluxDB  %s:  ' % str(e))     
 
     except InfluxDBClientError as e:
-      log.info('freeboard_createInfluxDB: Exception Error in InfluxDB  %s:  ' % str(e))
+      log.info('freeboard_rain_gauge: Exception Error in InfluxDB  %s:  ' % str(e))
 
 
             
     except:
-        log.info('freeboard: Error in InfluxDB mydata append %s:', response)
+        log.info('freeboard_rain_gauge: Error in InfluxDB mydata append %s:', response)
         e = sys.exc_info()[0]
         log.info("freeboard: Error: %s" % e)
         pass
 
     if response is None:
-        log.info('freeboard: InfluxDB Query has no data ')
+        log.info('freeboard_rain_gauge: InfluxDB Query has no data ')
         callback = request.args.get('callback')
         #return '{0}({1})'.format(callback, {'update':'False', 'status':'missing' })
         
@@ -5672,7 +5362,7 @@ def freeboard_rain_gauge():
 
 
     if not response:
-        log.info('freeboard: InfluxDB Query has no data ')
+        log.info('freeboard_rain_gauge: InfluxDB Query has no data ')
         callback = request.args.get('callback')
         #return '{0}({1})'.format(callback, {'update':'False', 'status':'missing' })
       
@@ -5708,10 +5398,10 @@ def freeboard_rain_gauge():
  
       points = list(response.get_points())
 
-      #log.info('freeboard:  InfluxDB-Cloud points%s:', points)
+      log.info('freeboard:  InfluxDB-Cloud points%s:', points)
 
       for point in points:
-        #log.info('freeboard:  InfluxDB-Cloud point%s:', point)
+        log.info('freeboard:  InfluxDB-Cloud point%s:', point)
         value1 = '---'
         value2 = '---'
         value3 = '---'
@@ -5742,19 +5432,20 @@ def freeboard_rain_gauge():
 
             # get seconds offset for selected timezone
             tzoffset = mydatetimetz.utcoffset().total_seconds()
-            ##log.info('freeboard_environmental:: tzoffset %s:  ' % tzoffset)           
+            ##log.info('freeboard_rain_gauge:: tzoffset %s:  ' % tzoffset)           
 
             # adjust GMT time for slected timezone for display purposes
             ts = int((mydatetime.timestamp() + tzoffset) * 1000 )
-            ##log.info('freeboard_environmental:: ts %s:  ' % ts)
+            log.info('freeboard_rain_gauge:: ts %s:  ' % ts)
 
         if point['accumulation'] is not None:       
           value1 = convertfbunits((float(point['accumulation'])),  convertunittype('rain', units))
         accumulation.append({'epoch':ts, 'value':value1})
 
 
-        # duration is in hours so scale to seconds = 1/(60*60 )        
-        if point['rainduration'] is not None:       
+        # duration is in hours so scale to seconds = 1/(60*60 )
+        #if point['rainduration'] is not None:  
+        if point['duration'] is not None:       
           value2 = convertfbunits((point['duration'] * 3600), 37)
         duration.append({'epoch':ts, 'value':value2})
 
@@ -5786,13 +5477,15 @@ def freeboard_rain_gauge():
    
 
       
-
+    except KeyError as e:
+        log.info('freeboard_rain_gauge: Key Error in InfluxDB mydata append %s:  ', strvalue)
+        log.info('freeboard_rain_gauge: Key Error in InfluxDB mydata append %s:  ' % str(e))
      
     
     except:
-        log.info('freeboard: Error in geting freeboard response %s:  ', strvalue)
+        log.info('freeboard_rain_gauge: Error in geting freeboard response %s:  ', strvalue)
         e = sys.exc_info()[0]
-        log.info('freeboard: Error in geting freeboard ststs %s:  ' % e)
+        log.info('freeboard_rain_gauge: Error in geting freeboard ststs %s:  ' % e)
         #return jsonify(update=False, status='missing' )
         callback = request.args.get('callback')
         return '{0}({1})'.format(callback, {'update':'False', 'status':'error' })
