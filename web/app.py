@@ -1455,6 +1455,238 @@ def freeboard_addnewdashboard():
     db_pool.putconn(conn)
 
 
+@app.route('/freeboard_getdashboardlist')
+@cross_origin()
+def freeboard_getdashboardlist():
+
+    userid = request.args.get('userid',1)
+
+
+    dashboardlists = user_db_functions.getdashboardlists(userid)
+
+    
+    log.info("freeboard_GetDashboardJSON prefuid %s ", userid)
+    log.info("freeboard_GetDashboardJSON dashboardlists %s ",  jsonify(dashboardlists))
+
+
+    return jsonify({'preferences':dashboardlists})
+  #  result = json.dumps(r, cls=DateEncoder)
+
+  #response = make_response(dashboardlists)
+  #response.headers['Cache-Control'] = 'public, max-age=0'
+  #response.headers['content-type'] = "application/json"
+  #return response
+  
+
+@app.route('/getclients')
+def getclients_endpoint():
+
+  try:  
+    conn = db_pool.getconn()
+
+  except:
+    e = sys.exc_info()[0]
+    log.info("getclients_endpoint error - db_pool.getconn %s", deviceid)
+    log.info('getclients_endpoint error: db_pool.getconn %s:  ' % e)
+    db_pool.closeall()  
+
+    return jsonify( message='Could not open a connection', status='error')
+
+
+  clientd = request.args.get('userid', '4d231fb3a164c5eeb1a8634d34c578eb')
+  deviceid = request.args.get('deviceid', '000000000000')
+
+
+  query = "select devicename from user_devices where userid = %s"
+
+  log.info('getclients_endpoint: deviceid %s:  ', deviceid)
+  
+  
+  try:
+    # first check db to see if user id is matched to device id
+    cursor = conn.cursor()
+    cursor.execute(query, (userid,))
+    i = cursor.fetchone()
+    # if not then just exit
+    if cursor.rowcount == 0:
+        log.info('getclients_endpoint: No devices found for userid %s:  ', userid)
+        return jsonify( message='No Userid  match', status='error')
+
+
+    log.info('getclients_endpoint: devices found for userid %s:  ', userid)
+
+
+    sqlstr = 'select clientapikey, clientemail, clientname from nds_clinents where userid = %s and deviceid = %s;'     
+    cursor.execute(sqlstr, (clientid, deviceid))
+
+    records = cursor.fetchall()
+
+
+    log.info('getclients_endpoint: records found for userid %s:  ', records)    
+
+    def type_for(type_code):
+      return {
+        23: 'INTEGER',
+        1043: 'STRING',
+        1114: 'DATETIME'    
+      }.get(type_code)
+
+
+    schema = dict(
+      fields= [
+        dict(name=c.name, type=type_for(c.type_code))
+        for c in cursor.description
+      ]
+    )
+
+    result = json.dumps(
+      dict(
+        schema=schema,
+        records=records
+      ),
+      cls=DateEncoder
+    )
+
+
+    log.info('getclients_endpoint: result found for userid %s:  ', result)
+    
+    response = make_response(result)
+    response.headers['content-type'] = "application/json"
+    return response
+
+  except:
+    e = sys.exc_info()[0]
+    log.info("getclients_endpoint error - user already exixts %s", deviceid)
+    log.info('getclients_endpoint error: Error in adding device %s:  ' % e)
+  
+  finally:
+    db_pool.putconn(conn)    
+
+
+
+@app.route('/addnewclient')
+def addnewclient_endpoint():
+  
+  conn = db_pool.getconn()
+
+  clientemail = request.args.get('clientemail', 'joe@chetcodigital.com')
+  deviceid = request.args.get('deviceid', '000000000000')
+  clientname = request.args.get('clientname', 'SeaSmart')
+  clientstatus = 1
+  clientid = request.args.get('siteid', 'LED SPECIALISTS')
+
+  clientapikey=hash_string(useremail)
+  deviceapikey=hash_string(userid+deviceid+"083019")
+  
+  
+  try:
+    
+    query  = "select * from nds_clients where clientemail = %s and deviceid = %s"
+    cursor = conn.cursor()
+    cursor.execute(query, ( clientemail, deviceid))
+      
+    if cursor.rowcount == 0:
+
+      log.info("Add Device status - user does not exist" )
+      userstatus = "user does not exist - adding"
+      
+      query  = "insert into nds_clients ( clientapikey, clientid, clientemail, deviceid, clientstatus, clientname) Values (%s, %s, %s, %s, %s, %s)"
+
+      # add new device record to DB
+      cursor = conn.cursor()
+      cursor.execute(query, (clientapikey, clientemail, deviceid, clientstatus, clientname, clientid))
+
+      conn.commit()
+      #i = cursor.fetchone()
+      # if not then just exit
+      #if cursor.rowcount == 0:
+        
+      if cursor.rowcount == 0:
+        userstatus = " Could not add user deviceid " + str(deviceid)
+        return jsonify( message='Could not add device', status='error')
+
+    else:
+      log.info("Add Device error - user already exixts %s", deviceid)
+      userstatus = "user deviceid " + str(deviceid) + " already exists"
+
+      
+    query  = "select clientname, deviceid from nds_clients where clientemail = %s"
+
+
+    cursor.execute(query, (clientemail,))
+
+
+      
+    if cursor.rowcount == 0:
+      return jsonify( message='Could not get devices', status='error', userstatus = userstatus)
+
+
+    devices = [dict((cursor.description[i][0], value) \
+        for i, value in enumerate(row)) for row in cursor.fetchall()]
+
+
+  
+    #return deviceapikey
+    return jsonify( message='Added addnewclient clientapikey' , clientapikey=clientapikey, userstatus = userstatus,  )
+
+
+  except:
+    e = sys.exc_info()[0]
+    log.info("Add addnewclient error - user already exixts %s", deviceid)
+    log.info('Add addnewclient error: Error in adding device %s:  ' % e)
+    
+  finally:
+    db_pool.putconn(conn) 
+
+
+@app.route('/deletendsclients')
+def deletendsclients_endpoint():
+
+  try:  
+    conn = db_pool.getconn()
+
+  except:
+    e = sys.exc_info()[0]
+    log.info("getuser_endpoint error - db_pool.getconn %s", deviceid)
+    log.info('getuser_endpoint error: db_pool.getconn %s:  ' % e)
+    db_pool.closeall()  
+
+    return jsonify( message='Could not open a connection', status='error')
+
+  clientid = request.args.get('clientid', '0')
+
+
+  query = "delete from nds_clients where clientid = %s"
+
+  log.info('getuser_endpoint: deviceid %s:  ', deviceid)
+  
+  
+  try:
+    # first check db to see if user id is matched to device id
+    cursor = conn.cursor()
+    cursor.execute(query, (userid,))
+    i = cursor.fetchone()
+    # if not then just exit
+    if cursor.rowcount == 0:
+        log.info('getndsclients_endpoint: No devices found for userid %s:  ', userid)
+        return jsonify( message='No Userid  match', status='error')
+
+
+    log.info('getndsclients_endpoint: devices found for userid %s:  ', userid)
+
+    sqlstr = 'select clientname from nds_clients;'    
+    cursor.execute(sqlstr, ())
+
+    return jsonify(result="OK")
+
+  except:
+    e = sys.exc_info()[0]
+    log.info("getndsclients_endpoint error - user already exixts %s", deviceid)
+    log.info('getndsclients_endpoint error: Error in adding device %s:  ' % e)
+  
+  finally:
+    db_pool.putconn(conn)    
+
 """
 def getdashboardjson(prefuid):
 
