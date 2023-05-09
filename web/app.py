@@ -1495,8 +1495,8 @@ def get_ndsclients_endpoint():
     log.info('getclients_endpoint: devices found for userid %s:  ', userid)
 
 
-    sqlstr = 'select clientapikey, clientemail, clientname from nds_clinents where userid = %s and deviceid = %s;'     
-    cursor.execute(sqlstr, (clientid, deviceid))
+    sqlstr = 'select clientapikey, clientemail, clientname from nds_clinents where deviceid = %s;'     
+    cursor.execute(sqlstr, (deviceid,))
 
     records = cursor.fetchall()
 
@@ -1532,6 +1532,10 @@ def get_ndsclients_endpoint():
     response = make_response(result)
     response.headers['content-type'] = "application/json"
     return response
+
+  except NameError as e:
+    log.info('getndsclients_endpoint NameError in geting deviceid  %s:  ' % str(e))
+    return jsonify(result="ERROR")
 
   except:
     e = sys.exc_info()[0]
@@ -1632,7 +1636,7 @@ def delete_ndsclients_endpoint():
     
     cursor = conn.cursor()
 
-    sqlstr = 'delete from nds_clients where clientapikey =%s;'    
+    sqlstr = 'delete from nds_clients where clientapikey = %s;'    
     cursor.execute(sqlstr, (clientapikey,))
 
     return jsonify(result="OK")
