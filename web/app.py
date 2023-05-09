@@ -1455,28 +1455,7 @@ def freeboard_addnewdashboard():
     db_pool.putconn(conn)
 
 
-@app.route('/freeboard_getdashboardlist')
-@cross_origin()
-def freeboard_getdashboardlist():
 
-    userid = request.args.get('userid',1)
-
-
-    dashboardlists = user_db_functions.getdashboardlists(userid)
-
-    
-    log.info("freeboard_GetDashboardJSON prefuid %s ", userid)
-    log.info("freeboard_GetDashboardJSON dashboardlists %s ",  jsonify(dashboardlists))
-
-
-    return jsonify({'preferences':dashboardlists})
-  #  result = json.dumps(r, cls=DateEncoder)
-
-  #response = make_response(dashboardlists)
-  #response.headers['Cache-Control'] = 'public, max-age=0'
-  #response.headers['content-type'] = "application/json"
-  #return response
-  
 
 @app.route('/getclients')
 def getclients_endpoint():
