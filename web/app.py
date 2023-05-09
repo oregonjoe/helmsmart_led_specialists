@@ -1637,12 +1637,18 @@ def delete_ndsclients_endpoint():
 
     return jsonify(result="OK")
 
+  except TypeError as e:
+    log.info('getndsclients_endpoint TypeError in geting deviceid  %s:  ' % str(e))
+    return jsonify(result="ERROR")
+        
   except:
     e = sys.exc_info()[0]
     log.info('getndsclients_endpoint error: Error in deleting client  %s:  ' % e)
+    return jsonify(result="ERROR")
   
   finally:
-    db_pool.putconn(conn)    
+    db_pool.putconn(conn)
+ 
 
 """
 def getdashboardjson(prefuid):
