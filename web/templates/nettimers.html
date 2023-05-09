@@ -296,7 +296,7 @@ function handleGetDeviceData(response)
 
     //GetAlertEvents();	
 	//getClientList(gDeviceKey)
-    getClientList(gUserID)
+    getClientList(gUserID, gDeviceKey)
 }
 
 	  
@@ -374,7 +374,7 @@ function handleGetClientData(response)
     GetAlertEvents();	
     
 }
-function getClientList(userid)
+function getClientList(userid, deviceid)
 {
 
         $.blockUI({ 
@@ -392,7 +392,7 @@ function getClientList(userid)
 
 	var devicedataurl;
 	
-    devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/getuser?gettype=ndsclients&userid=" + userid + "&ndsclients&clientstatus=1";
+    devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/getndsclients?userid=" + userid + "&deviceid=" + deviceid + "&ndsclients&clientstatus=1";
 	//devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/getclients?deviceid=" + deviceid + "&ndsclients&clientstatus=1";
 
     return $.ajax({
