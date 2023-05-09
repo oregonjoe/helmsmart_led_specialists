@@ -1457,8 +1457,8 @@ def freeboard_addnewdashboard():
 
 
 
-@app.route('/getclients')
-def getclients_endpoint():
+@app.route('/getndsclients')
+def get_ndsclients_endpoint():
 
   try:  
     conn = db_pool.getconn()
@@ -1537,14 +1537,15 @@ def getclients_endpoint():
     e = sys.exc_info()[0]
     log.info("getclients_endpoint error - user already exixts %s", deviceid)
     log.info('getclients_endpoint error: Error in adding device %s:  ' % e)
+    return jsonify( message='No data found  match', status='error')
   
   finally:
     db_pool.putconn(conn)    
 
 
 
-@app.route('/addnewclient')
-def addnewclient_endpoint():
+@app.route('/addndsclient')
+def add_ndsclient_endpoint():
   
   conn = db_pool.getconn()
 
@@ -1619,49 +1620,28 @@ def addnewclient_endpoint():
 
 
 @app.route('/deletendsclients')
-def deletendsclients_endpoint():
+def delete_ndsclients_endpoint():
 
-  try:  
-    conn = db_pool.getconn()
+  clientapikey = request.args.get('clientapikey', '0')
 
-  except:
-    e = sys.exc_info()[0]
-    log.info("getuser_endpoint error - db_pool.getconn %s", deviceid)
-    log.info('getuser_endpoint error: db_pool.getconn %s:  ' % e)
-    db_pool.closeall()  
-
-    return jsonify( message='Could not open a connection', status='error')
-
-  clientid = request.args.get('clientid', '0')
-
-
-  query = "delete from nds_clients where clientid = %s"
-
-  log.info('getuser_endpoint: deviceid %s:  ', deviceid)
+  log.info('deletendsclients_endpoint: clientid %s:  ', clientid)
   
+  conn = db_pool.getconn()
   
   try:
-    # first check db to see if user id is matched to device id
+    
     cursor = conn.cursor()
-    cursor.execute(query, (userid,))
-    i = cursor.fetchone()
-    # if not then just exit
-    if cursor.rowcount == 0:
-        log.info('getndsclients_endpoint: No devices found for userid %s:  ', userid)
-        return jsonify( message='No Userid  match', status='error')
-
 
     log.info('getndsclients_endpoint: devices found for userid %s:  ', userid)
 
-    sqlstr = 'select clientname from nds_clients;'    
-    cursor.execute(sqlstr, ())
+    sqlstr = 'delete from from nds_clients where clientapikey =%s;'    
+    cursor.execute(sqlstr, (clientapikey))
 
     return jsonify(result="OK")
 
   except:
     e = sys.exc_info()[0]
-    log.info("getndsclients_endpoint error - user already exixts %s", deviceid)
-    log.info('getndsclients_endpoint error: Error in adding device %s:  ' % e)
+    log.info('getndsclients_endpoint error: Error in deleting client  %s:  ' % e)
   
   finally:
     db_pool.putconn(conn)    
