@@ -1557,7 +1557,7 @@ def add_ndsclient_endpoint():
   deviceid = request.args.get('deviceid', '000000000000')
   clientname = request.args.get('clientname', 'SeaSmart')
   clientstatus = 1
-  clientid = request.args.get('siteid', 'LED SPECIALISTS')
+  siteid = request.args.get('siteid', 'LED SPECIALISTS')
 
   clientapikey=hash_string(useremail)
   deviceapikey=hash_string(userid+deviceid+"083019")
@@ -1574,11 +1574,11 @@ def add_ndsclient_endpoint():
       log.info("Add Device status - user does not exist" )
       userstatus = "user does not exist - adding"
       
-      query  = "insert into nds_clients ( clientapikey, clientid, clientemail, deviceid, clientstatus, clientname) Values (%s, %s, %s, %s, %s, %s)"
+      query  = "insert into nds_clients ( clientapikey,  clientemail, deviceid, clientstatus, clientname, siteid) Values (%s, %s, %s, %s, %s, %s)"
 
       # add new device record to DB
       cursor = conn.cursor()
-      cursor.execute(query, (clientapikey, clientemail, deviceid, clientstatus, clientname, clientid))
+      cursor.execute(query, (clientapikey, clientemail, deviceid, clientstatus, clientname, sitetid))
 
       conn.commit()
       #i = cursor.fetchone()
