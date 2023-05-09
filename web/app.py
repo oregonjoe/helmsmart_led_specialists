@@ -1571,14 +1571,14 @@ def add_ndsclient_endpoint():
       
     if cursor.rowcount == 0:
 
-      log.info("Add Device status - user does not exist" )
-      userstatus = "user does not exist - adding"
+      log.info("Add Device status - client does not exist" )
+      userstatus = "client does not exist - adding"
       
       query  = "insert into nds_clients ( clientapikey,  clientemail, deviceid, clientstatus, clientname, siteid) Values (%s, %s, %s, %s, %s, %s)"
 
       # add new device record to DB
       cursor = conn.cursor()
-      cursor.execute(query, (clientapikey, clientemail, deviceid, clientstatus, clientname, sitetid))
+      cursor.execute(query, (clientapikey, clientemail, deviceid, clientstatus, clientname, siteid))
 
       conn.commit()
       #i = cursor.fetchone()
