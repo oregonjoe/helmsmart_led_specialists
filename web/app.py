@@ -1632,8 +1632,8 @@ def delete_ndsclients_endpoint():
     
     cursor = conn.cursor()
 
-    sqlstr = 'delete from from nds_clients where clientapikey =%s;'    
-    cursor.execute(sqlstr, (clientapikey))
+    sqlstr = 'delete from nds_clients where clientapikey =%s;'    
+    cursor.execute(sqlstr, (clientapikey,))
 
     return jsonify(result="OK")
 
