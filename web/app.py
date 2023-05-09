@@ -1559,8 +1559,8 @@ def add_ndsclient_endpoint():
   clientstatus = 1
   siteid = request.args.get('siteid', 'LED SPECIALISTS')
 
-  clientapikey=hash_string(useremail)
-  deviceapikey=hash_string(userid+deviceid+"083019")
+  clientapikey=hash_string(clientemail)
+  #deviceapikey=hash_string(userid+deviceid+"083019")
   
   
   try:
