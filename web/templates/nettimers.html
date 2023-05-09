@@ -271,6 +271,34 @@ function pad(number, length) {
 function padToHex2(value) {
     return ("0"+(value).toString(16)).slice(-2);
 }
+
+
+function handleGetDeviceData(response)
+{
+  var index=0;
+
+  $.unblockUI();
+
+  document.getElementById("DeviceTypeID").options.length = 0;
+
+  response.records.forEach(function(row){
+ 
+     // myDeviceIDs[index]=row[0];
+      document.getElementById("DeviceTypeID").options[index++] = new Option(row[0] + ":" + row[1], row[0]);
+
+  });
+
+
+  document.getElementById("DeviceTypeID").selectedIndex = 0;
+  gDeviceKey = document.getElementById("DeviceTypeID").options[0].value;
+					document.getElementById("DeviceKey").value = gDeviceKey;
+					
+
+    //GetAlertEvents();	
+	//getClientList(gDeviceKey)
+    getClientList(gDeviceKey)
+}
+
 	  
 function getDeviceList(userid)
 {
@@ -320,31 +348,6 @@ function getDeviceList(userid)
 
 }
 
-function handleGetDeviceData(response)
-{
-  var index=0;
-
-  $.unblockUI();
-
-  document.getElementById("DeviceTypeID").options.length = 0;
-
-  response.records.forEach(function(row){
- 
-     // myDeviceIDs[index]=row[0];
-      document.getElementById("DeviceTypeID").options[index++] = new Option(row[0] + ":" + row[1], row[0]);
-
-  });
-
-
-  document.getElementById("DeviceTypeID").selectedIndex = 0;
-  gDeviceKey = document.getElementById("DeviceTypeID").options[0].value;
-					document.getElementById("DeviceKey").value = gDeviceKey;
-					
-
-    //GetAlertEvents();	
-	getClientList(gDeviceKey)
-    
-}
 
 
 function handleGetClientData(response)
@@ -389,8 +392,8 @@ function getClientList(userid)
 
 	var devicedataurl;
 	
-    devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/getuser?gettype=ndsclients&clientstatus=1";
-	//devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/getuser?gettype=devices&userid=" + userid;
+    devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/getuser?gettype=ndsclients&userid=" + userid + "&ndsclients&clientstatus=1";
+	//devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/getclients?deviceid=" + deviceid + "&ndsclients&clientstatus=1";
 
     return $.ajax({
     //async: false,
