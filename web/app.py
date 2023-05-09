@@ -696,6 +696,7 @@ def getuser_endpoint():
   userid = request.args.get('userid', '4d231fb3a164c5eeb1a8634d34c578eb')
   deviceid = request.args.get('deviceid', '000000000000')
   pagetype = request.args.get('pagetype', 0)
+  clientstatus = request.args.get('clientstatus', 0)
   prefkey = request.args.get('prefkey', 0)
 
   query = "select devicename from user_devices where userid = %s"
@@ -768,6 +769,11 @@ def getuser_endpoint():
     elif gettype == 'scheduleprefs':
         sqlstr = 'select messagekey, message_json from timmer_prefs where userid = %s and deviceid = %s;'     
         cursor.execute(sqlstr, (userid, deviceid))
+
+    elif gettype == 'ndsclients':
+        #sqlstr = 'select messagekey, message_json from timmer_prefs where userid = %s and deviceid = %s;'
+        sqlstr = 'select clientname from nds_clients where clientstatus = %s;'     
+        cursor.execute(sqlstr, (clientstatus))
 
 
 
