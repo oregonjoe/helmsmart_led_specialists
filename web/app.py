@@ -772,8 +772,10 @@ def getuser_endpoint():
 
     elif gettype == 'ndsclients':
         #sqlstr = 'select messagekey, message_json from timmer_prefs where userid = %s and deviceid = %s;'
-        sqlstr = 'select clientname from nds_clients where clientstatus = %s;'     
-        cursor.execute(sqlstr, (clientstatus))
+        #sqlstr = 'select clientname from nds_clients where clientstatus = %s;'     
+        #cursor.execute(sqlstr, (clientstatus))
+        sqlstr = 'select clientname from nds_clients;'    
+        cursor.execute(sqlstr, ())
 
 
 
