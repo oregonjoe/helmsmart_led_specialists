@@ -1495,7 +1495,7 @@ def get_ndsclients_endpoint():
     log.info('getclients_endpoint: devices found for userid %s:  ', userid)
 
 
-    sqlstr = 'select clientapikey, clientemail, clientname from nds_clinents where deviceid = %s;'     
+    sqlstr = 'select clientapikey, clientemail, clientname from nds_clients where deviceid = %s;'     
     cursor.execute(sqlstr, (deviceid,))
 
     records = cursor.fetchall()
