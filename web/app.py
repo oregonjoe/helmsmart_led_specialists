@@ -1472,7 +1472,7 @@ def get_ndsclients_endpoint():
     return jsonify( message='Could not open a connection', status='error')
 
 
-  clientd = request.args.get('userid', '4d231fb3a164c5eeb1a8634d34c578eb')
+  userid = request.args.get('userid', '4d231fb3a164c5eeb1a8634d34c578eb')
   deviceid = request.args.get('deviceid', '000000000000')
 
 
