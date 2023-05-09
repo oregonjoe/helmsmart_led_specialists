@@ -1613,11 +1613,15 @@ def add_ndsclient_endpoint():
     #return deviceapikey
     return jsonify( message='Added addnewclient clientapikey' , clientapikey=clientapikey, userstatus = userstatus,  )
 
-
+  except NameError as e:
+    log.info('add_ndsclient_endpoint TypeError in geting deviceid  %s:  ' % str(e))
+    return jsonify(result="ERROR")
+  
   except:
     e = sys.exc_info()[0]
-    log.info("Add addnewclient error - user already exixts %s", deviceid)
-    log.info('Add addnewclient error: Error in adding device %s:  ' % e)
+    log.info("Add add_ndsclient_endpoint error - user already exixts %s", deviceid)
+    log.info('Add add_ndsclient_endpoint error: Error in adding device %s:  ' % e)
+    return jsonify(result="ERROR")
     
   finally:
     db_pool.putconn(conn) 
