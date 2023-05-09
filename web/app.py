@@ -1624,15 +1624,13 @@ def delete_ndsclients_endpoint():
 
   clientapikey = request.args.get('clientapikey', '0')
 
-  log.info('deletendsclients_endpoint: clientid %s:  ', clientid)
+  log.info('deletendsclients_endpoint: clientapikey %s:  ', clientapikey)
   
   conn = db_pool.getconn()
   
   try:
     
     cursor = conn.cursor()
-
-    log.info('getndsclients_endpoint: devices found for userid %s:  ', userid)
 
     sqlstr = 'delete from from nds_clients where clientapikey =%s;'    
     cursor.execute(sqlstr, (clientapikey))
