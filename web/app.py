@@ -1646,7 +1646,7 @@ def update_ndsclient_endpoint():
     
     query  = "select * from nds_clients where clientapikey = %s"
     cursor = conn.cursor()
-    cursor.execute(query, ( clientemail,))
+    cursor.execute(query, ( clientapikey,))
       
     if cursor.rowcount != 0:
 
