@@ -1646,7 +1646,7 @@ def update_ndsclient_endpoint():
     
     query  = "select * from nds_clients where clientapikey = %s"
     cursor = conn.cursor()
-    cursor.execute(query, ( clientemail, deviceid))
+    cursor.execute(query, ( clientemail,))
       
     if cursor.rowcount != 0:
 
@@ -1665,12 +1665,12 @@ def update_ndsclient_endpoint():
       #if cursor.rowcount == 0:
         
       if cursor.rowcount == 0:
-        userstatus = " Could not add user deviceid " + str(deviceid)
+        userstatus = " Could not update client " + str(clientapikey)
         return jsonify( message='Could not add device', status='error')
 
     else:
-      log.info("Add Device error - user already exixts %s", deviceid)
-      userstatus = "user deviceid " + str(deviceid) + " already exists"
+      log.info("Add Device error - client dosnt exixts %s", clientapikey)
+      userstatus = "client " + str(clientapikey) + " dosnt exists"
 
       
     query  = "select clientname, deviceid from nds_clients where clientemail = %s"
