@@ -2018,7 +2018,7 @@ function saveClient(index)
 	if(ndsclientkey == "")
 		var devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/addndsclient?deviceid=" + ndsdeviceid + "&siteid=" + ndssiteid + "&clientemail=" + ndsclientemail + "&clientname=" + ndsclientname 
     else
-		var devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/updatendsclient?clientapikey=" ndsclientkey + "&deviceid=" + ndsdeviceid + "&siteid=" + ndssiteid + "&clientemail=" + ndsclientemail + "&clientname=" + ndsclientname 
+		var devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/updatendsclient?clientapikey=" + ndsclientkey + "&deviceid=" + ndsdeviceid + "&siteid=" + ndssiteid + "&clientemail=" + ndsclientemail + "&clientname=" + ndsclientname 
     
    return $.ajax({
 					   //async: false,
