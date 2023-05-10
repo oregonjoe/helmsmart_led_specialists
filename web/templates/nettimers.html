@@ -361,7 +361,11 @@ function handleGetClientData(response)
   response.records.forEach(function(row){
  
      // myDeviceIDs[index]=row[0];
-      document.getElementById("client-name").options[index++] = new Option(row[0], row[0]);
+	  var clientlabel = "client-label_0" + index;
+	  
+      document.getElementById("client-name").options[index++] = new Option(row[0], row[1]);
+	  
+	  document.getElementById(clientlabel).value = row[1];
 
   });
 
@@ -673,7 +677,7 @@ $(function() {   $(' #timmer-save').click(function() {
   
   
 function saveTimmerLabel() {
-    var label =  $('#timmer-label').val();
+    var label =  $('#client-label').val();
 	
 	var index =  $('#TimmerID').val();
 	
@@ -713,7 +717,7 @@ var id;
 
 id =  sel.selectedIndex;
 
-document.getElementById("timmer-label").value = TimmersLabels[id];
+document.getElementById("client-label").value = TimmersLabels[id];
 
 
 document.getElementById("timmer-channel").selectedIndex = TimmersChannel[id];
@@ -829,16 +833,16 @@ var timmerMin = ids[2];
 
 
 
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">0</td><td><input type="text"  id="timmer-label_00" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">1</td><td><input type="text"  id="timmer-label_01" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">2</td><td><input type="text"  id="timmer-label_02" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">3</td><td><input type="text"  id="timmer-label_03" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">4</td><td><input type="text"  id="timmer-label_04" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">5</td><td><input type="text"  id="timmer-label_05" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">6</td><td><input type="text"  id="timmer-label_06" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">7</td><td><input type="text"  id="timmer-label_07" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">8</td><td><input type="text"  id="timmer-label_08" value="" style="width: 220px;height:25px"></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 60px;height:35px">9</td><td><input type="text"  id="timmer-label_09" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">0</td><td><input type="hidden"  id="client-key_00" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_00" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_00" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">1</td><td><input type="hidden"  id="client-key_01" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_01" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_01" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">2</td><td><input type="hidden"  id="client-key_02" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_02" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_02" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">3</td><td><input type="hidden"  id="client-key_03" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_03" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_03" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">4</td><td><input type="hidden"  id="client-key_04" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_04" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_04" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">5</td><td><input type="hidden"  id="client-key_05" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_05" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_05" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">6</td><td><input type="hidden"  id="client-key_06" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_06" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_06" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">7</td><td><input type="hidden"  id="client-key_07" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_07" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_07" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">8</td><td><input type="hidden"  id="client-key_08" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_08" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_08" value="" style="width: 220px;height:25px"></td></tr>
+<tr style="height:35px" id="DimmerID"><td style="width: 20px;height:35px">9</td><td><input type="hidden"  id="client-key_09" value="" style="width: 20px;height:25px"></td>td><input type="text"  id="client-label_09" value="" style="width: 220px;height:25px"></td>td><input type="text"  id="client-email_09" value="" style="width: 220px;height:25px"></td></tr>
 
 <tr>
 <td>
@@ -865,16 +869,16 @@ var timmerMin = ids[2];
 			
 function saveLabels() {
 
-	TimmersLabels[0] = document.getElementById("timmer-label_00").value;
-	TimmersLabels[1] = document.getElementById("timmer-label_01").value;
-	TimmersLabels[2] = document.getElementById("timmer-label_02").value;
-	TimmersLabels[3] = document.getElementById("timmer-label_03").value;
-	TimmersLabels[4] = document.getElementById("timmer-label_04").value;
-	TimmersLabels[5] = document.getElementById("timmer-label_05").value;
-	TimmersLabels[6] = document.getElementById("timmer-label_06").value;
-	TimmersLabels[7] = document.getElementById("timmer-label_07").value;
-	TimmersLabels[8] = document.getElementById("timmer-label_08").value;
-	TimmersLabels[9] = document.getElementById("timmer-label_09").value;
+	TimmersLabels[0] = document.getElementById("client-label_00").value;
+	TimmersLabels[1] = document.getElementById("client-label_01").value;
+	TimmersLabels[2] = document.getElementById("client-label_02").value;
+	TimmersLabels[3] = document.getElementById("client-label_03").value;
+	TimmersLabels[4] = document.getElementById("client-label_04").value;
+	TimmersLabels[5] = document.getElementById("client-label_05").value;
+	TimmersLabels[6] = document.getElementById("client-label_06").value;
+	TimmersLabels[7] = document.getElementById("client-label_07").value;
+	TimmersLabels[8] = document.getElementById("client-label_08").value;
+	TimmersLabels[9] = document.getElementById("client-label_09").value;
 	
 	
 	
@@ -2236,16 +2240,16 @@ function handleGetDevicePramDetails(response)
 						TimmersLabels[i]=TimmerArrayLabel[i];
 					}
 					
-					document.getElementById("timmer-label_00").value = TimmersLabels[0];
-					document.getElementById("timmer-label_01").value = TimmersLabels[1];
-					document.getElementById("timmer-label_02").value = TimmersLabels[2];
-					document.getElementById("timmer-label_03").value = TimmersLabels[3];
-					document.getElementById("timmer-label_04").value = TimmersLabels[4];
-					document.getElementById("timmer-label_05").value = TimmersLabels[5];
-					document.getElementById("timmer-label_06").value = TimmersLabels[6];
-					document.getElementById("timmer-label_07").value = TimmersLabels[7];
-					document.getElementById("timmer-label_08").value = TimmersLabels[8];
-					document.getElementById("timmer-label_09").value = TimmersLabels[9];
+					document.getElementById("client-label_00").value = TimmersLabels[0];
+					document.getElementById("client-label_01").value = TimmersLabels[1];
+					document.getElementById("client-label_02").value = TimmersLabels[2];
+					document.getElementById("client-label_03").value = TimmersLabels[3];
+					document.getElementById("client-label_04").value = TimmersLabels[4];
+					document.getElementById("client-label_05").value = TimmersLabels[5];
+					document.getElementById("client-label_06").value = TimmersLabels[6];
+					document.getElementById("client-label_07").value = TimmersLabels[7];
+					document.getElementById("client-label_08").value = TimmersLabels[8];
+					document.getElementById("client-label_09").value = TimmersLabels[9];
 	
 	
 	
@@ -3338,7 +3342,7 @@ function handleGetAlertIDs(response)
 									datasourceelement.EnableRGBWColors= gEnableRGBWColors;
 									//TimmersLabels[index] = mySeries.title;
 									
-									//document.getElementById("timmer-label_0" + index).value = TimmersLabels[index];
+									//document.getElementById("client-label_0" + index).value = TimmersLabels[index];
 									
 									//$('#event-modal #client-name option[value=' + index + ']').text(TimmersLabels[index]);
 									
@@ -4573,16 +4577,16 @@ function SavePrefs() {
 	
 	
 
-	document.getElementById("timmer-label_00").value = TimmersLabels[0];
-	document.getElementById("timmer-label_01").value = TimmersLabels[1];
-	document.getElementById("timmer-label_02").value = TimmersLabels[2];
-	document.getElementById("timmer-label_03").value = TimmersLabels[3];
-	document.getElementById("timmer-label_04").value = TimmersLabels[4];
-	document.getElementById("timmer-label_05").value = TimmersLabels[5];
-	document.getElementById("timmer-label_06").value = TimmersLabels[6];
-	document.getElementById("timmer-label_07").value = TimmersLabels[7];
-	document.getElementById("timmer-label_08").value = TimmersLabels[8];
-	document.getElementById("timmer-label_09").value = TimmersLabels[9];
+	document.getElementById("client-label_00").value = TimmersLabels[0];
+	document.getElementById("client-label_01").value = TimmersLabels[1];
+	document.getElementById("client-label_02").value = TimmersLabels[2];
+	document.getElementById("client-label_03").value = TimmersLabels[3];
+	document.getElementById("client-label_04").value = TimmersLabels[4];
+	document.getElementById("client-label_05").value = TimmersLabels[5];
+	document.getElementById("client-label_06").value = TimmersLabels[6];
+	document.getElementById("client-label_07").value = TimmersLabels[7];
+	document.getElementById("client-label_08").value = TimmersLabels[8];
+	document.getElementById("client-label_09").value = TimmersLabels[9];
 	
 	
 	
