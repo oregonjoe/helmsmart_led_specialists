@@ -1627,6 +1627,84 @@ def add_ndsclient_endpoint():
     db_pool.putconn(conn) 
 
 
+@app.route('/updatendsclient')
+def update_ndsclient_endpoint():
+  
+  conn = db_pool.getconn()
+
+  clientemail = request.args.get('clientemail', 'joe@chetcodigital.com')
+  deviceid = request.args.get('deviceid', '000000000000')
+  clientname = request.args.get('clientname', 'SeaSmart')
+  clientstatus = 1
+  siteid = request.args.get('siteid', 'LED SPECIALISTS')
+
+  clientapikey=request.args.get('clientapikey', "")
+  #deviceapikey=hash_string(userid+deviceid+"083019")
+  
+  
+  try:
+    
+    query  = "select * from nds_clients where clientapikey = %s"
+    cursor = conn.cursor()
+    cursor.execute(query, ( clientemail, deviceid))
+      
+    if cursor.rowcount != 0:
+
+      log.info("Update client status - client exist" )
+      userstatus = "client exist - updating"
+      
+      query  = "update nds_clients set clientemail = %s, deviceid= %s, clientstatus= %s, clientname= %s, siteid= %s where clientapikey = %s"
+
+      # add new device record to DB
+      cursor = conn.cursor()
+      cursor.execute(query, (clientemail, deviceid, clientstatus, clientname, siteid, clientapikey))
+
+      conn.commit()
+      #i = cursor.fetchone()
+      # if not then just exit
+      #if cursor.rowcount == 0:
+        
+      if cursor.rowcount == 0:
+        userstatus = " Could not add user deviceid " + str(deviceid)
+        return jsonify( message='Could not add device', status='error')
+
+    else:
+      log.info("Add Device error - user already exixts %s", deviceid)
+      userstatus = "user deviceid " + str(deviceid) + " already exists"
+
+      
+    query  = "select clientname, deviceid from nds_clients where clientemail = %s"
+
+
+    cursor.execute(query, (clientemail,))
+
+
+      
+    if cursor.rowcount == 0:
+      return jsonify( message='Could not get devices', status='error', userstatus = userstatus)
+
+
+    devices = [dict((cursor.description[i][0], value) \
+        for i, value in enumerate(row)) for row in cursor.fetchall()]
+
+
+  
+    #return deviceapikey
+    return jsonify( message='Updated addnewclient clientapikey' , clientapikey=clientapikey, userstatus = userstatus,  )
+
+  except NameError as e:
+    log.info('updatendsclient TypeError in geting deviceid  %s:  ' % str(e))
+    return jsonify(result="ERROR")
+  
+  except:
+    e = sys.exc_info()[0]
+    log.info("Add updatendsclient error - user already exixts %s", deviceid)
+    log.info('Add updatendsclient error: Error in adding device %s:  ' % e)
+    return jsonify(result="ERROR")
+    
+  finally:
+    db_pool.putconn(conn) 
+
 @app.route('/deletendsclients')
 def delete_ndsclients_endpoint():
 

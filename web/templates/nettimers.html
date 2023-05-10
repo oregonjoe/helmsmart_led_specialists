@@ -848,7 +848,7 @@ var timmerMin = ids[2];
 <tr style="height:35px" id="DimmerID"><td style="width: 10px;height:35px">3<input type="hidden"  id="client-key_03" value="" style="width: 10px;height:25px"></td><td><input type="text"  id="client-label_03" value="" style="width: 220px;height:25px"></td><td><input type="text"  id="client-email_03" value="" style="width: 220px;height:25px"></td>
 <td><button type="button" id="save-client" onclick="saveClient(3);" class="btn btn-primary" style="width: 60px;height:35px">Save</button></td>
 <td><button type="button" id="delete-client" onclick="deleteClient(3);" class="btn btn-primary" style="width: 60px;height:35px">Delete</button></td></tr>
-<tr style="height:35px" id="DimmerID"><td style="width: 10px;height:35px">4><input type="hidden"  id="client-key_04" value="" style="width: 10px;height:25px"></td><td><input type="text"  id="client-label_04" value="" style="width: 220px;height:25px"></td><td><input type="text"  id="client-email_04" value="" style="width: 220px;height:25px"></td>
+<tr style="height:35px" id="DimmerID"><td style="width: 10px;height:35px">4<input type="hidden"  id="client-key_04" value="" style="width: 10px;height:25px"></td><td><input type="text"  id="client-label_04" value="" style="width: 220px;height:25px"></td><td><input type="text"  id="client-email_04" value="" style="width: 220px;height:25px"></td>
 
 <td><button type="button" id="save-client" onclick="saveClient(4);" class="btn btn-primary" style="width: 60px;height:35px">Save</button></td>
 <td><button type="button" id="delete-client" onclick="deleteClient(4);" class="btn btn-primary" style="width: 60px;height:35px">Delete</button></td></tr>
@@ -1975,7 +1975,80 @@ gDeviceKey = document.getElementById("DeviceTypeID").options[sel.selectedIndex].
 					
 }
 
+function handleSaveClient(response)
+ {
+ var index=0;
+ 
+   	$.unblockUI();
+	
+	
+}
 
+
+function saveClient(index)
+{
+
+        $.blockUI({ 
+     message: '<h1>Search in progress...</h1>',    
+     css: {             
+     border: 'none',             
+     padding: '15px',             
+     backgroundColor: '#000', 
+        
+     '-webkit-border-radius': '10px',             
+     '-moz-border-radius': '10px',             
+     opacity: .5,             
+     color: '#fff'         
+     } }); 
+	 
+	 
+	 var clientlabel = "client-label_0" + index;
+	 var clientemail = "client-email_0" + index;
+	 var clientkey = "client-key_0" + index;
+	 
+
+	 var ndsdeviceid = gDeviceID;
+	 var ndsclientemail = 	 document.getElementById(clientemail).value;
+	 var ndsclientkey =  document.getElementById(clientkey).value;
+	 var ndsclientname =   document.getElementById(clientlabel).value;
+	 var ndssiteid = gDeviceName;
+	 
+	 
+
+	if(ndsclientkey == "")
+		var devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/addndsclient?deviceid=" + ndsdeviceid + "&siteid=" + ndssiteid + "&clientemail=" + ndsclientemail + "&clientname=" + ndsclientname 
+    else
+		var devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/updatendsclient?clientapikey=" ndsclientkey + "&deviceid=" + ndsdeviceid + "&siteid=" + ndssiteid + "&clientemail=" + ndsclientemail + "&clientname=" + ndsclientname 
+    
+   return $.ajax({
+					   //async: false,
+					   cache: false,
+					   url: devicedataurl,
+					   dataType: "json",
+					   timeout: 10000,
+					   statusCode: {    
+					   	404: function() {      alert( "page not found" );    }, 
+					   	200: function() {      } 
+					   	 },
+					   success: function(response) {
+					   		handleSaveClient(response)
+					   },
+					   complete: function() {  
+		                      // unblock when remote call returns 
+		                      // document.getElementById("SearchStatus").innerHTML = "Search Complete";
+		                    //   ShowGraphSmartChart(gindex);
+		                	//$.unblockUI();   
+		            	}, 
+		            	error: function(request,status,errorThrown) {  
+		                         // document.getElementById("SearchStatus").innerHTML = "Search Error";
+		               		$.unblockUI();   
+		            	} 
+		 		  });
+
+
+}	
+
+}
 
 
 function getDeviceParamList(userid)
