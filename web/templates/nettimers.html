@@ -2001,6 +2001,12 @@ function saveClient(index)
      color: '#fff'         
      } }); 
 	 
+	 if((gDeviceID == "") || gDeviceName == ""))
+	 {
+		alert("Please Select a site first from the PREFS tab");
+		return;
+	 }
+	 
 	 
 	 var clientlabel = "client-label_0" + index;
 	 var clientemail = "client-email_0" + index;
