@@ -362,10 +362,14 @@ function handleGetClientData(response)
  
      // myDeviceIDs[index]=row[0];
 	  var clientlabel = "client-label_0" + index;
+	  var clientemail = "client-email_0" + index;
+	  var clientkey = "client-key_0" + index;
 	  
-      document.getElementById("client-name").options[index++] = new Option(row[0], row[1]);
+      document.getElementById("client-name").options[index++] = new Option(row[2], row[0]);
 	  
-	  document.getElementById(clientlabel).value = row[1];
+	  document.getElementById(clientlabel).value = row[2];
+	  document.getElementById(clientemail).value = row[1];
+	  document.getElementById(clientkey).value = row[0];
 
   });
 
@@ -821,14 +825,10 @@ var timmerMin = ids[2];
 <tr style="height:35px" id="DimmerID">
 
 
-<td style="width: 80px;height:35px">ID</td>
-<!-- <td style="width: 80px;height:35px">Channel</td> -->
-<!--
-<td style="width: 80px;height:35px">Time Zone</td>
--->
-
-
-<td style="width: 220px;height:35px">Label</td>
+<td style="width: 20px;height:35px">ID</td>
+<td style="width: 20px;height:35px">key</td>
+<td style="width: 220px;height:35px">Client</td>
+<td style="width: 220px;height:35px">Email</td>
 <td style="width: 120px;height:35px">&nbsp;</td>
 
 
