@@ -1850,11 +1850,11 @@ def prefs_endpoint():
     elif gettype == 'add_timmer_pref':
 
       
-      log.info("prefs add timmer_prefs data %s : %s", deviceid, request.mimetype)
-      log.info("prefs add timmer_prefs data %s : %s", deviceid, request.form.to_dict(flat=False))
+      log.info("prefs add timmer_pref data %s : %s", deviceid, request.mimetype)
+      log.info("prefs add timmer_pref data %s : %s", deviceid, request.form.to_dict(flat=False))
 
 
-      log.info("prefs add timmer_prefs data %s : %s", deviceid, request.data)
+      log.info("prefs add timmer_pref data %s : %s", deviceid, request.data)
       #log.info("prefs add timmer_prefs form %s : %s", deviceid, request.form) 
       #myTimmerPrefs = json.loads(request.form)
       # myTimmerPrefs = request.form['timmerprefs']
@@ -1866,10 +1866,22 @@ def prefs_endpoint():
 
 
 
+      #sqlstr = 'select * from settimmerprefs(%s,%s,%s);' 
+      #cursor.execute(sqlstr, (userid, deviceid, request.data))
+
+
+      query  = "insert into timmer_prefs (  userid, deviceid,  request.data) Values ( %s, %s, %s)"
+
+      # add new device record to DB
+      #cursor = conn.cursor()
+      cursor.execute(query, ( userid, deviceid, message_json))
+
+      conn.commit()
+
+
+
+
       
-      sqlstr = 'select * from settimmerprefs(%s,%s,%s);' 
-      #cursor.execute(sqlstr, (userid, deviceid, options))
-      cursor.execute(sqlstr, (userid, deviceid, request.data))
       
     elif gettype == 'update_timmer_pref':
       log.info("prefs update timmer_prefs %s : %s", deviceid, request.data)      
