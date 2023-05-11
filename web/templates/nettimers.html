@@ -397,22 +397,25 @@ function handleGetClientData(response)
   
 	index=0;
 
-	// fill in new rows
-	response.records.forEach(function(row){
- 
-     // myDeviceIDs[index]=row[0];
-	  clientlabel = "client-label_0" + index;
-	  clientemail = "client-email_0" + index;
-	  clientkey = "client-key_0" + index;
-	  
-      document.getElementById("client-name").options[index++] = new Option(row[2], row[0]);
-	  
-	  document.getElementById(clientlabel).value = row[2];
-	  document.getElementById(clientemail).value = row[1];
-	  document.getElementById(clientkey).value = row[0];
+	if(response.records.length != 0)
+	{
+	
+		// fill in new rows
+		response.records.forEach(function(row){
+	 
+		 // myDeviceIDs[index]=row[0];
+		  clientlabel = "client-label_0" + index;
+		  clientemail = "client-email_0" + index;
+		  clientkey = "client-key_0" + index;
+		  
+		  document.getElementById("client-name").options[index++] = new Option(row[2], row[0]);
+		  
+		  document.getElementById(clientlabel).value = row[2];
+		  document.getElementById(clientemail).value = row[1];
+		  document.getElementById(clientkey).value = row[0];
 
-  });
-
+	  });
+	}
 
   document.getElementById("client-name").selectedIndex = 0;
   gDeviceKey = document.getElementById("client-name").options[0].value;
@@ -4621,10 +4624,10 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 		</div>
 		
 		
-		
+		<!--
 						<div class="form-group" style="margin-top:25px;">
 				<label class="control-label col-sm-2" for="btnSettingsPrefSave"></label>
-				<!-- <div class="col-sm-offset-4 col-sm-4"> -->
+		
 			 <div class="col-sm-6"> 
 				<button id="btnSettingsEventSave" name="btnValue" value="Save Pref" class="btn btn-primary" style="width: 120px;height:35px" onclick="AddNewPref();">Save Pref</button>
 				<button id="btnSettingsEventModify" name="btnValue" value="Modify Pref" class="btn btn-primary" style="width: 120px;height:35px" onclick="ModifyPref();">Modify Pref</button>
@@ -4633,7 +4636,7 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 			
 			</div>
 		</div>
-		
+		-->
 		
 		
 		
