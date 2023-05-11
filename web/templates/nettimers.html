@@ -1480,7 +1480,7 @@ function deleteEvent(event) {
    
 
   
-		devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=delete_alert&prefkey=" + prefkey + "&userid=" + gUserID ;
+		devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=delete_alert&prefkey=" + prefkey + "&userid=" + gUserID ;
 
 
 
@@ -3051,8 +3051,8 @@ function AddNewPref()
 		TimmerPrefs['TimmerArrayLabel'] =  TimmerArrayLabel ;
 
 	  
-		devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=add_timmer_pref&userid=" + gUserID +  "&deviceid=" +  gDeviceKey +  "&options=" + JSON.stringify(TimmerPrefs);
- 		//devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=add_timmer_pref&userid=" + gUserID +  "&deviceid=" +  gDeviceKey ;
+		devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=add_timmer_pref&userid=" + gUserID +  "&deviceid=" +  gDeviceKey +  "&options=" + JSON.stringify(TimmerPrefs);
+ 		//devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=add_timmer_pref&userid=" + gUserID +  "&deviceid=" +  gDeviceKey ;
    
 	
 	
@@ -3167,8 +3167,8 @@ function ModifyPref()
 
 		TimmerPrefs['TimmerArrayLabel'] =  TimmerArrayLabel ;
 	  
-	  devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=update_timmer_pref&prefkey=" + prefkey + "&userid=" + gUserID +   "&deviceid=" +  gDeviceKey +  "&options=" + JSON.stringify(TimmerPrefs);	  
-	  //devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=update_timmer_pref&prefkey=" + prefkey + "&userid=" + gUserID +   "&deviceid=" +  gDeviceKey ;
+	  devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=update_timmer_pref&prefkey=" + prefkey + "&userid=" + gUserID +   "&deviceid=" +  gDeviceKey +  "&options=" + JSON.stringify(TimmerPrefs);	  
+	  //devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=update_timmer_pref&prefkey=" + prefkey + "&userid=" + gUserID +   "&deviceid=" +  gDeviceKey ;
 	  
 	  
 	  
@@ -3261,7 +3261,7 @@ function DeletePref()
 
 		
 		
-   devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=delete_timmer_pref&userid=" + gUserID + "&prefkey=" +  prefkey ;
+   devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=delete_timmer_pref&userid=" + gUserID + "&prefkey=" +  prefkey ;
 
    return $.ajax({
 					   //async: false,
@@ -3811,7 +3811,7 @@ function DeleteAlert()
    
 
   
-  devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=delete_alert&prefkey=" + prefkey + "&userid=" + gUserID ;
+  devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=delete_alert&prefkey=" + prefkey + "&userid=" + gUserID ;
 
 
 
@@ -4071,11 +4071,11 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 
 	if(myAlertID == 0)
 	{
-		devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=add_alert&userid=" + gUserID + "&deviceid=" +  gUserID + "&start=" +  StartEpoch+ "&end=" +  EndEpoch + "&interval=" +  myInterval + "&repeat=0"  + "&options=" + JSON.stringify(AlertPrefs);
+		devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=add_alert&userid=" + gUserID + "&deviceid=" +  gUserID + "&start=" +  StartEpoch+ "&end=" +  EndEpoch + "&interval=" +  myInterval + "&repeat=0"  + "&options=" + JSON.stringify(AlertPrefs);
 	}
 	else
 	{
-		devicedataurl = "http://pushsmartdata.herokuapp.com/prefs?type=update_alert&prefkey=" + myAlertID + "&userid=" + gUserID + "&deviceid=" +  gUserID + "&start=" +  StartEpoch+ "&end=" +  EndEpoch + "&interval=" +  myInterval + "&repeat=0"  + "&options=" + JSON.stringify(AlertPrefs);
+		devicedataurl = "http://helmsmart-led-specialists.herokuapp.com/prefs?type=update_alert&prefkey=" + myAlertID + "&userid=" + gUserID + "&deviceid=" +  gUserID + "&start=" +  StartEpoch+ "&end=" +  EndEpoch + "&interval=" +  myInterval + "&repeat=0"  + "&options=" + JSON.stringify(AlertPrefs);
 	
 	
 	}
@@ -4686,9 +4686,9 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 							<div class="form-group" style="margin-top:25px;">
 				<label class="control-label col-sm-2" for="btnSettingsAlertSave"></label>
 			<div class="col-sm-6"> 
-				<button id="btnSettingsEventSave" name="btnValue" value="Save" class="btn btn-primary" style="width: 80px;height:35px" onclick="UpdateLogAlert();">Save Timer</button>
-				<button id="btnSettingsEventDelete" name="btnValue" value="Delete" class="btn btn-primary" style="width: 80px;height:35px" onclick="DeleteAlert();">Delete Timer</button>
-				<button id="btnTimmerDisable" name="btnValue" value="Disable" class="btn btn-primary" style="width: 80px;height:35px" onclick="DisableTimmer();">Disable Timer</button>	
+				<button id="btnSettingsEventSave" name="btnValue" value="Save" class="btn btn-primary" style="width: 100px;height:35px" onclick="UpdateLogAlert();">Save Timer</button>
+				<button id="btnSettingsEventDelete" name="btnValue" value="Delete" class="btn btn-primary" style="width: 100px;height:35px" onclick="DeleteAlert();">Delete Timer</button>
+				<button id="btnTimmerDisable" name="btnValue" value="Disable" class="btn btn-primary" style="width: 100px;height:35px" onclick="DisableTimmer();">Disable Timer</button>	
 				<!-- <button name="btnValue" value="Cancel" class="btn btn-default cancel">Cancel</button> -->
 			
 			</div>
@@ -4700,9 +4700,9 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 				<label class="control-label col-sm-2" for="btnSettingsPrefSave"></label>
 				<!-- <div class="col-sm-offset-4 col-sm-4"> -->
 			 <div class="col-sm-6"> 
-				<button id="btnSettingsEventSave" name="btnValue" value="Save Pref" class="btn btn-primary" style="width: 80px;height:35px" onclick="AddNewPref();">Save Pref</button>
-				<button id="btnSettingsEventModify" name="btnValue" value="Modify Pref" class="btn btn-primary" style="width: 80px;height:35px" onclick="ModifyPref();">Modify Pref</button>
-				<button id="btnSettingsEventDelete" name="btnValue" value="Delete Pref" class="btn btn-primary" style="width: 80px;height:35px" onclick="DeletePref();">Delete Pref</button>
+				<button id="btnSettingsEventSave" name="btnValue" value="Save Pref" class="btn btn-primary" style="width: 100px;height:35px" onclick="AddNewPref();">Save Pref</button>
+				<button id="btnSettingsEventModify" name="btnValue" value="Modify Pref" class="btn btn-primary" style="width: 100px;height:35px" onclick="ModifyPref();">Modify Pref</button>
+				<button id="btnSettingsEventDelete" name="btnValue" value="Delete Pref" class="btn btn-primary" style="width: 100px;height:35px" onclick="DeletePref();">Delete Pref</button>
 			
 			
 			</div>
