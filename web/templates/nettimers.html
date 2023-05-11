@@ -285,7 +285,9 @@ function handleGetDeviceData(response)
   
   response.records.forEach(function(row){
  
-  if(row[2] != "")
+  if(row[2] == null)
+	timezone = "Greenwich"
+  else if(row[2] != "")
 	timezone = timezone  = row[2];
  
      // myDeviceIDs[index]=row[0];
