@@ -3939,7 +3939,7 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 	  
 	// var myCity = document.getElementById("LocationCity").options[document.getElementById("LocationCity").selectedIndex].value
 	 
-	var myCity = getLocationCity();
+	//var myCity = getLocationCity();
   // set these to zero so the events do not expire
    // EndEpoch = (new Date).getTime();
 	//StartEpoch =(new Date).getTime();
@@ -3977,6 +3977,7 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 	
 	  gDeviceName = myTags[1];
 	  gDeviceKey = myTags[0];
+	  var  myCity = myTags[2];
 
 	AlertPrefs['devicename'] = gDeviceName;
       AlertPrefs['deviceid'] = gDeviceKey;
