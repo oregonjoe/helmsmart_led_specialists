@@ -1870,11 +1870,11 @@ def prefs_endpoint():
       #cursor.execute(sqlstr, (userid, deviceid, request.data))
 
 
-      query  = "insert into timmer_prefs (  userid, deviceid,  request.data) Values ( %s, %s, %s)"
+      query  = "insert into timmer_prefs (  userid, deviceid, message_json ) Values ( %s, %s, %s)"
 
       # add new device record to DB
       #cursor = conn.cursor()
-      cursor.execute(query, ( userid, deviceid, message_json))
+      cursor.execute(query, ( userid, deviceid, request.data))
 
       conn.commit()
 
