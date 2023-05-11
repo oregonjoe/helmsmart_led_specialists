@@ -375,14 +375,16 @@ function handleGetClientData(response)
 	  document.getElementById(clientkey).value = "";
 	  
   }
+  
+	index=0;
 
-  // fill in new rows
-  response.records.forEach(function(row){
+	// fill in new rows
+	response.records.forEach(function(row){
  
      // myDeviceIDs[index]=row[0];
-	  var clientlabel = "client-label_0" + index;
-	  var clientemail = "client-email_0" + index;
-	  var clientkey = "client-key_0" + index;
+	  clientlabel = "client-label_0" + index;
+	  clientemail = "client-email_0" + index;
+	  clientkey = "client-key_0" + index;
 	  
       document.getElementById("client-name").options[index++] = new Option(row[2], row[0]);
 	  
