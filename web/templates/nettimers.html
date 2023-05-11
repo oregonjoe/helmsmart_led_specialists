@@ -281,10 +281,15 @@ function handleGetDeviceData(response)
 
   document.getElementById("DeviceTypeID").options.length = 0;
 
+  var timezone = "Greenwich"
+  
   response.records.forEach(function(row){
  
+  if(row[2] != "")
+	timezone = timezone  = row[2];
+ 
      // myDeviceIDs[index]=row[0];
-      document.getElementById("DeviceTypeID").options[index++] = new Option(row[0] + ":" + row[1], row[0]);
+      document.getElementById("DeviceTypeID").options[index++] = new Option(row[1] + ":" + timezone  , row[0]);
 
   });
 

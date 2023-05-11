@@ -722,7 +722,7 @@ def getuser_endpoint():
         sqlstr = 'select * from getuserdevices(%s);'   
         cursor.execute(sqlstr, (userid,))
     elif gettype == 'deviceblwskeys':
-        sqlstr = 'select devicename, deviceid, blwskey from user_devices where userid = %s;'
+        sqlstr = 'select  deviceid, devicename, blwskey from user_devices where userid = %s;'
         cursor.execute(sqlstr, (userid,))
     elif gettype == 'devicekeys':
         sqlstr = 'select devicename, deviceid, deviceapikey from user_devices where userid = %s;'
