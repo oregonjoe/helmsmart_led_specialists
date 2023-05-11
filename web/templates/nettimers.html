@@ -357,7 +357,26 @@ function handleGetClientData(response)
   $.unblockUI();
 
   document.getElementById("client-name").options.length = 0;
+  
+  var clientlabel = "client-label_0" + index;
+  var clientemail = "client-email_0" + index;
+  var clientkey = "client-key_0" + index;
+	  
+	  
+  // clear out existimg rows
+  for(index = 0; index <10; index++)
+  {
+		clientlabel = "client-label_0" + index;
+		clientemail = "client-email_0" + index;
+		clientkey = "client-key_0" + index;
+		
+  	  document.getElementById(clientlabel).value = "";
+	  document.getElementById(clientemail).value = "";
+	  document.getElementById(clientkey).value = "";
+	  
+  }
 
+  // fill in new rows
   response.records.forEach(function(row){
  
      // myDeviceIDs[index]=row[0];
