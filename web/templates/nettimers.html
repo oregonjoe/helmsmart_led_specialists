@@ -3972,7 +3972,7 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
       // AlertPrefs['channelname'] = document.getElementById("ChannelName").options[document.getElementById("ChannelName").selectedIndex].text;
       // AlertPrefs['channelid'] = document.getElementById("ChannelName").options[document.getElementById("ChannelName").selectedIndex].value;
    
-    gDeviceKey = myTags[0] = document.getElementById("DeviceTypeID").options[document.getElementById("DeviceTypeID").selectedIndex].value;
+    gDeviceKey = document.getElementById("DeviceTypeID").options[document.getElementById("DeviceTypeID").selectedIndex].value;
    
  	var myText = document.getElementById("DeviceTypeID").options[document.getElementById("DeviceTypeID").selectedIndex].text;
 	var myTags = myText.split(":");
