@@ -1968,7 +1968,10 @@ gDeviceKey = document.getElementById("DeviceTypeID").options[sel.selectedIndex].
 					document.getElementById("DeviceKey").value = gDeviceKey;
 					
 					
-						GetAlertEvents();		
+					
+		    getClientList(gUserID, gDeviceKey)			
+					
+					//	GetAlertEvents();		
 					
 					//getDeviceParamList(gUserID);
 					getDeviceParamDetails(gUserID);
@@ -1987,14 +1990,6 @@ function handleDeleteClient(response)
 
 
 
-function handleDeleteClient(response)
- {
- var index=0;
- 
-   	$.unblockUI();
-	
-	
-}
 
 
 function deleteClient(index)
@@ -2077,7 +2072,15 @@ function deleteClient(index)
 }
 
 
-  
+ function handleSaveClient(response)
+ {
+ var index=0;
+ 
+   	$.unblockUI();
+	
+	
+}
+ 
 
 function saveClient(index)
 {
