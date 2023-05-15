@@ -3457,8 +3457,8 @@ function handleGetAlertIDs(response)
 			}
 			
 			
-			myStartDate = row[2]  + (gServerTimeZoneOffset * (60)) ;	;
-			myEndDate = row[3]  + (gServerTimeZoneOffset * (60)) ;	;
+			myStartDate = row[2]  - (gServerTimeZoneOffset * (60)) ;	;
+			myEndDate = row[3]  - (gServerTimeZoneOffset * (60)) ;	;
 			
 			
 			myEventName.push(myText);
@@ -4012,7 +4012,7 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 	  //AlertPrefs['alerttimezone'] = document.getElementById("TimeZoneId").options[document.getElementById("TimeZoneId").selectedIndex].text;
 	 AlertPrefs['alerttimezone'] ="(LOCAL) Local Time"
 
-	  AlertPrefs['alertendtime_utc'] = 	myEndTime + (gServerTimeZoneOffset * (60)) ;	
+	  AlertPrefs['alertendtime_utc'] = 	myEndTime  ;	
 		
 
 			
@@ -4067,8 +4067,8 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 		  
 		  
 		  series_prefs3['units']=42 ;
-		  series_prefs3['alarmlow']=myStartTime + (gServerTimeZoneOffset * (60)) ;	
-		  series_prefs3['alarmhigh']=myEndTime + (gServerTimeZoneOffset * (60)) ;	
+		  series_prefs3['alarmlow']=myStartTime  ;	
+		  series_prefs3['alarmhigh']=myEndTime  ;	
 		  
 		  
 		  //ConstructPGNTypeID(gDeviceKey,0);
