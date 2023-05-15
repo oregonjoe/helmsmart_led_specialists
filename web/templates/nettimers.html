@@ -1263,7 +1263,7 @@ var timezone =0;
 			 // remove timezone so we have adjusted to GMT
 			 //startsecs = startsecs + (timerzoneOffset*60); 
 			 // now add in device location timezone
-			 starttimesecs = starttimesecs - ((timerzoneOffset + parseInt(timezone)) * 60);
+			 starttimesecs = starttimesecs - ((timerzoneOffset + parseInt(timezone)) * 60)  + (gServerTimeZoneOffset * (60)) ;	;
 
 			  // endsecs in in local browser time
 			 enddate = new Date(event.endTime);
@@ -1271,7 +1271,7 @@ var timezone =0;
 			  // remove timezone so we have adjusted to GMT
 			 //endsecs = endsecs + (timerzoneOffset*60); 
 			  // now add in device location timezone
-			 endtimesecs = endtimesecs - ((timerzoneOffset + parseInt(timezone)) * 60);
+			 endtimesecs = endtimesecs - ((timerzoneOffset + parseInt(timezone)) * 60)  + (gServerTimeZoneOffset * (60)) ;	;
 			 // add a full days woth of seconds since date stops at 0:00:00 and not 23:59:59
 			 //endtimesecs = endtimesecs + (24*60*60) - 1;
 			 //endtimesecs = endtimesecs  - 1;
@@ -3457,8 +3457,8 @@ function handleGetAlertIDs(response)
 			}
 			
 			
-			myStartDate = row[2];
-			myEndDate = row[3];
+			myStartDate = row[2]  + (gServerTimeZoneOffset * (60)) ;	;
+			myEndDate = row[3]  + (gServerTimeZoneOffset * (60)) ;	;
 			
 			
 			myEventName.push(myText);
@@ -4012,7 +4012,7 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 	  //AlertPrefs['alerttimezone'] = document.getElementById("TimeZoneId").options[document.getElementById("TimeZoneId").selectedIndex].text;
 	 AlertPrefs['alerttimezone'] ="(LOCAL) Local Time"
 
-	  AlertPrefs['alertendtime_utc'] = 	myEndTime;	
+	  AlertPrefs['alertendtime_utc'] = 	myEndTime + (gServerTimeZoneOffset * (60)) ;	
 		
 
 			
@@ -4067,8 +4067,8 @@ function AddLogAlert(myAlertID, myTimmerLabel, StartEpoch, EndEpoch, myStartTime
 		  
 		  
 		  series_prefs3['units']=42 ;
-		  series_prefs3['alarmlow']=myStartTime;
-		  series_prefs3['alarmhigh']=myEndTime;
+		  series_prefs3['alarmlow']=myStartTime + (gServerTimeZoneOffset * (60)) ;	
+		  series_prefs3['alarmhigh']=myEndTime + (gServerTimeZoneOffset * (60)) ;	
 		  
 		  
 		  //ConstructPGNTypeID(gDeviceKey,0);
@@ -4701,6 +4701,7 @@ function SavePrefs() {
 	var gCalanderDataSources = new Array();
 
 	var timezoneOffset = 0;
+	var gServerTimeZoneOffset = -2;
 	
 	var index = 0;
 	var gUserID="000000000000";
