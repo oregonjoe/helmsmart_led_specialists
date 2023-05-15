@@ -2151,8 +2151,11 @@ function saveClient(index)
 	 var myText = document.getElementById("DeviceTypeID").options[document.getElementById("DeviceTypeID").selectedIndex].text;
 	var myTags = myText.split(":");
 	
-		gDeviceName = myTags[1];
-		gDeviceKey = myTags[0];
+		gDeviceName = myTags[0];
+		
+		
+		//gDeviceKey = myTags[0];
+		gDeviceKey = document.getElementById("DeviceKey").options[document.getElementById("DeviceKey").selectedIndex].text;;
 	 
 	 
 	 if((gDeviceKey == "") || (gDeviceName == ""))
