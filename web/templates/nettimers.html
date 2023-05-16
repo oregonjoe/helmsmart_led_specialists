@@ -3677,7 +3677,10 @@ function handleGetAlertIDs(response)
 									
 									gCalanderDataSources.push(datasourceelement);
 									
-									myText = myText + ":" + new Date((myStartDate*1000) );
+									var mydispaydate = new Date((myStartDate*1000) );
+									
+									myText = myText + ":" + mydispaydate.toLocaleString();
+									
 									document.getElementById("ScheduleID").options[index++] = new Option(myText, myAlertID);		
 									
 									
