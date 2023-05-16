@@ -3677,6 +3677,7 @@ function handleGetAlertIDs(response)
 									
 									gCalanderDataSources.push(datasourceelement);
 									
+									myText = myText + ":" + new Date((myStartDate*1000) );
 									document.getElementById("ScheduleID").options[index++] = new Option(myText, myAlertID);		
 									
 									
