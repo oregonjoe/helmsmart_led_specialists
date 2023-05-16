@@ -3681,6 +3681,8 @@ function handleGetAlertIDs(response)
 									
 									const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', timeStyle: 'short' };
 									
+									const options = { dateStyle: 'long', timeStyle: 'short' };
+									
 									myText = myText + " - " + mydispaydate.toLocaleString('en-GB',options );
 									
 									document.getElementById("ScheduleID").options[index++] = new Option(myText, myAlertID);		
