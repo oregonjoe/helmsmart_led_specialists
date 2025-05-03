@@ -30,8 +30,8 @@
 			"name": "stats",
 			"type": "JSON",
 			"settings": {
-				"url": "https://helmsmart-freeboard.herokuapp.com/get_dbstats_html",
-				"apikey": "a5069b96637473d7701fa11eb9baad3d",
+				"url": "https://helmsmart-led-specialists.herokuapp.com/get_dbstats_html",
+				"apikey": "be97b584371254042e55f585068d95f2",
 				"refresh": 10,
 				"span": "1day",
 				"resolution": "",
